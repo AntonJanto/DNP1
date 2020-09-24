@@ -7,5 +7,7 @@ namespace AdvancedTodo.Data
     {
         IList<Todo> GetTodos();
         void AddTodo(Todo todo);
+        void RemoveTodo(Todo todo);
+        void UpdateTodo(Todo todo);
     }
 }

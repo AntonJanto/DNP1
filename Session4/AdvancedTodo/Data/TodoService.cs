@@ -10,7 +10,7 @@ namespace AdvancedTodo.Data
 {
     public class TodoService : ITodoService
     {
-        private string _todoFile = "todos.json";
+        private readonly string _todoFile = "todos.json";
         private IList<Todo> _todos;
 
         public TodoService()
@@ -18,8 +18,7 @@ namespace AdvancedTodo.Data
             if (!File.Exists(_todoFile))
             {
                 Seed();
-                string productAsJson = JsonSerializer.Serialize(_todos, new JsonSerializerOptions() { WriteIndented = true });
-                File.WriteAllText(_todoFile, productAsJson);
+                WriteTodosToFile();
             }
             else
             {
@@ -30,17 +29,36 @@ namespace AdvancedTodo.Data
 
         public void AddTodo(Todo todo)
         {
-            int max = _todos.Max(todo => todo.TodoID);
+            int max = _todos.Any() ? _todos.Max(todo => todo.TodoID) : 0;
             todo.TodoID = (++max);
             _todos.Add(todo);
-            string productAsJson = JsonSerializer.Serialize(_todos);
+            WriteTodosToFile();
+        }
+
+        public void RemoveTodo(Todo todo)
+        {
+            Todo toRemove = _todos.First(t => t.TodoID == todo.TodoID);
+            _todos.Remove(toRemove);
+            WriteTodosToFile();
+        }
+
+        public void UpdateTodo(Todo todo)
+        {
+            Todo toUpdate = _todos.First(t => t.TodoID == todo.TodoID);
+            toUpdate.IsCompleted = todo.IsCompleted;
+            WriteTodosToFile();
+        }
+
+        private void WriteTodosToFile()
+        {
+            string productAsJson = JsonSerializer.Serialize(_todos, new JsonSerializerOptions() { WriteIndented = true });
             File.WriteAllText(_todoFile, productAsJson);
         }
 
         public IList<Todo> GetTodos()
         {
             return new List<Todo>(_todos);
-        }
+        } 
         private void Seed()
         {
             Todo[] ts =

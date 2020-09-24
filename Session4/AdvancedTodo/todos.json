@@ -3,30 +3,12 @@
     "UserID": 1,
     "TodoID": 1,
     "Title": "Do dishes",
-    "IsCompleted": true
-  },
-  {
-    "UserID": 2,
-    "TodoID": 2,
-    "Title": "Walk the dog",
     "IsCompleted": false
   },
   {
     "UserID": 3,
     "TodoID": 3,
     "Title": "Do DNP homework",
-    "IsCompleted": true
-  },
-  {
-    "UserID": 3,
-    "TodoID": 4,
-    "Title": "Eat breakfast",
-    "IsCompleted": true
-  },
-  {
-    "UserID": 4,
-    "TodoID": 5,
-    "Title": "Mow lawn",
     "IsCompleted": false
   }
 ]

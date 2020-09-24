@@ -6,16 +6,28 @@
 
 <div class="d-flex justify-content-between">
     <h1>Todo List</h1>
-    <p class="btn btn-primary my-auto rounded p-1" @onclick="GoToAddTodo">
+    <p class="btn btn-primary my-auto rounded p-1 shadow" @onclick="GoToAddTodo">
         Add new Todo
     </p>
 </div>
 
-@if (todos == null)
+<p>
+    Filter by User Id: <input type="number" @oninput="@((arg) => Filter(arg))" style="width:50px"/>
+</p>
+<p>
+    Filter by completed status: 
+    <select class="form-control selectpicker" @onchange="@((arg) => FilterByCompletedStatus(arg))" style="width:100px">
+        <option>Both</option>
+        <option>False</option>
+        <option>True</option>
+    </select>
+</p>
+
+@if (allTodos == null)
 {
     <p class="text-center card shadow"><em>Loading...</em></p>
 }
-else if (!todos.Any())
+else if (!allTodos.Any())
 {
     <p class="text-center card shadow"><em>No todo items. Please add some.</em></p>
 }
@@ -28,28 +40,73 @@ else
                 <th>Todo ID</th>
                 <th>Title</th>
                 <th>Competed</th>
+                <th>Remove</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in todos)
+            @foreach (var item in showTodos)
             {
                 <tr>
                     <td>@item.UserID</td>
                     <td>@item.TodoID</td>
                     <td>@item.Title</td>
-                    <td>@(item.IsCompleted ? "Yes" : "No")</td>
+                    <td>
+                            <input type="checkbox" checked=@item.IsCompleted
+                                   @onchange="@((arg) => CompletedChange(arg, item))">
+                    </td>
+                    <td>
+                        <button @onclick="@(() => RemoveTodo(item))">
+                            <span class="oi oi-x" style="color:red" />
+                        </button>
+                    </td>
                 </tr>
-             }
+            }
         </tbody>
     </table>
 }
 @code {
-    private IList<Todo> todos;
+    private IList<Todo> allTodos;
+    private IList<Todo> showTodos;
 
     protected override void OnInitialized()
     {
-        todos = TodoService.GetTodos();
+        allTodos = TodoService.GetTodos();
+        showTodos = allTodos;
     }
+
+    private void Filter(ChangeEventArgs evt)
+    {
+        int? filterById = null;
+
+        try
+        {
+            filterById = int.Parse(evt.Value.ToString());
+        }
+        catch (Exception e) { }
+
+        showTodos = filterById != null ? allTodos.Where(t => t.UserID == filterById).ToList() : allTodos;
+
+
+    }
+
+    private void FilterByCompletedStatus(ChangeEventArgs evt)
+    {
+
+    }
+
+    private void RemoveTodo(Todo todo)
+    {
+        Todo todoToRemove = allTodos.First(t => t.TodoID == todo.TodoID);
+        TodoService.RemoveTodo(todo);
+        allTodos.Remove(todoToRemove);
+    }
+
+    private void CompletedChange(ChangeEventArgs evt, Todo todo)
+    {
+        todo.IsCompleted = (bool)evt.Value;
+        TodoService.UpdateTodo(todo);
+    }
+
 
     private void GoToAddTodo()
     {
