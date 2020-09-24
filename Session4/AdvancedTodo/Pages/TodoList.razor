@@ -1,0 +1,59 @@
+﻿@page "/todos"
+@using AdvancedTodo.Data
+@using AdvancedTodo.Models
+@inject ITodoService TodoService
+@inject NavigationManager NavigationManager
+
+<div class="d-flex justify-content-between">
+    <h1>Todo List</h1>
+    <p class="btn btn-primary my-auto rounded p-1" @onclick="GoToAddTodo">
+        Add new Todo
+    </p>
+</div>
+
+@if (todos == null)
+{
+    <p class="text-center card shadow"><em>Loading...</em></p>
+}
+else if (!todos.Any())
+{
+    <p class="text-center card shadow"><em>No todo items. Please add some.</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>User ID</th>
+                <th>Todo ID</th>
+                <th>Title</th>
+                <th>Competed</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in todos)
+            {
+                <tr>
+                    <td>@item.UserID</td>
+                    <td>@item.TodoID</td>
+                    <td>@item.Title</td>
+                    <td>@(item.IsCompleted ? "Yes" : "No")</td>
+                </tr>
+             }
+        </tbody>
+    </table>
+}
+@code {
+    private IList<Todo> todos;
+
+    protected override void OnInitialized()
+    {
+        todos = TodoService.GetTodos();
+    }
+
+    private void GoToAddTodo()
+    {
+        NavigationManager.NavigateTo("/add-todo");
+    }
+
+}

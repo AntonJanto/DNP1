@@ -1,0 +1,39 @@
+[
+  {
+    "FirstName": "Jan",
+    "LastName": "Vasilcenko",
+    "Age": 21,
+    "Height": 183.5,
+    "IsMarried": false,
+    "Sex": "M",
+    "Hobbies": [
+      "Game Development",
+      "Klarka predsa"
+    ]
+  },
+  {
+    "FirstName": "Adam",
+    "LastName": "Ondrasko",
+    "Age": 21,
+    "Height": 172.9,
+    "IsMarried": true,
+    "Sex": "M",
+    "Hobbies": [
+      "Karate",
+      "Fifa",
+      "Pole Dance"
+    ]
+  },
+  {
+    "FirstName": "Marko",
+    "LastName": "Gula",
+    "Age": 20,
+    "Height": 176,
+    "IsMarried": false,
+    "Sex": "M",
+    "Hobbies": [
+      "Spinky Bink",
+      "Binky Spink"
+    ]
+  }
+]
