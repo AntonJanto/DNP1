@@ -67,6 +67,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorApp", "Session4\Blazo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdvancedTodo", "Session4\AdvancedTodo\AdvancedTodo.csproj", "{56F5A248-2FD3-4353-82C8-AA25A5B8A07A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FourthCoffee", "Session4\FourthCoffee\FourthCoffee.csproj", "{92691B24-AAAB-421F-BAB4-165B760E0DD4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -173,6 +175,10 @@ Global
 		{56F5A248-2FD3-4353-82C8-AA25A5B8A07A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{56F5A248-2FD3-4353-82C8-AA25A5B8A07A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{56F5A248-2FD3-4353-82C8-AA25A5B8A07A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92691B24-AAAB-421F-BAB4-165B760E0DD4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92691B24-AAAB-421F-BAB4-165B760E0DD4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92691B24-AAAB-421F-BAB4-165B760E0DD4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92691B24-AAAB-421F-BAB4-165B760E0DD4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

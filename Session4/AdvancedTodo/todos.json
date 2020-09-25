@@ -9,6 +9,6 @@
     "UserID": 3,
     "TodoID": 3,
     "Title": "Do DNP homework",
-    "IsCompleted": false
+    "IsCompleted": true
   }
 ]
