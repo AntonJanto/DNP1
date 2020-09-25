@@ -12,10 +12,10 @@
 </div>
 
 <p>
-    Filter by User Id: <input type="number" @oninput="@((arg) => Filter(arg))" style="width:50px"/>
+    Filter by User Id: <input type="number" @oninput="@((arg) => FilterByUserId(arg))" style="width:50px" />
 </p>
 <p>
-    Filter by completed status: 
+    Filter by completed status:
     <select class="form-control selectpicker" @onchange="@((arg) => FilterByCompletedStatus(arg))" style="width:100px">
         <option>Both</option>
         <option>False</option>
@@ -51,8 +51,8 @@ else
                     <td>@item.TodoID</td>
                     <td>@item.Title</td>
                     <td>
-                            <input type="checkbox" checked=@item.IsCompleted
-                                   @onchange="@((arg) => CompletedChange(arg, item))">
+                        <input type="checkbox" checked=@item.IsCompleted
+                               @onchange="@((arg) => CompletedChange(arg, item))">
                     </td>
                     <td>
                         <button @onclick="@(() => RemoveTodo(item))">
@@ -68,30 +68,48 @@ else
     private IList<Todo> allTodos;
     private IList<Todo> showTodos;
 
+    private int? filterByUserId;
+    private bool? filterByIsCompleted;
+
     protected override void OnInitialized()
     {
         allTodos = TodoService.GetTodos();
         showTodos = allTodos;
     }
 
-    private void Filter(ChangeEventArgs evt)
+    private void FilterByUserId(ChangeEventArgs evt)
     {
-        int? filterById = null;
-
+        filterByUserId = null;
         try
         {
-            filterById = int.Parse(evt.Value.ToString());
+            filterByUserId = int.Parse(evt.Value.ToString());
         }
-        catch (Exception e) { }
-
-        showTodos = filterById != null ? allTodos.Where(t => t.UserID == filterById).ToList() : allTodos;
-
-
+        catch (Exception e)
+        {
+            filterByUserId = null;
+        }
+        ExecuteFilter();
     }
 
     private void FilterByCompletedStatus(ChangeEventArgs evt)
     {
+        filterByIsCompleted = null;
+        try
+        {
+            filterByIsCompleted = bool.Parse(evt.Value.ToString());
+        }
+        catch (Exception e)
+        {
+            filterByIsCompleted = null;
+        }
+        ExecuteFilter();
+    }
 
+    private void ExecuteFilter()
+    {
+        showTodos = allTodos.Where(t =>
+        (filterByUserId != null && t.UserID == filterByUserId || filterByUserId == null) &&
+        (filterByIsCompleted != null && t.IsCompleted == filterByIsCompleted || filterByIsCompleted == null)).ToList();
     }
 
     private void RemoveTodo(Todo todo)
