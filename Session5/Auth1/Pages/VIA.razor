@@ -1,0 +1,11 @@
+﻿@page "/VIA"
+@attribute [Authorize(Policy = "MustbeVIA")]
+@attribute [Authorize(Policy = "MustBeTeacher")]
+
+<h3>VIA</h3>
+
+<p>This page is only allowed for VIA employees and students</p>
+
+@code {
+
+}
