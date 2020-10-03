@@ -1,12 +1,66 @@
 ﻿@page "/families"
 
-<h3>Families</h3>
+@using DNP_FamilyOverview1.Models.Families
+@using DNP_FamilyOverview1.Data.Families
+
+@inject IFamilyService FamilyService
+@inject NavigationManager NavigationManager
+
+
+<div class="d-flex justify-content-between">
+    <h2>Families</h2>
+    <button class="btn btn-primary my-auto rounded p-1 shadow" @onclick="GoToStartAFamily">
+        Start a new family
+    </button>
+</div>
+
+
 
 <div>
-    
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Family</th>
+                <th>Street</th>
+                <th>HouseNumber</th>
+                <th>Family members</th>
+                <th>Remove</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var family in allFamilies)
+            {
+                <tr>
+                    <td>@family.Adults.First().LastName</td>
+                    <td>@family.StreetName</td>
+                    <td>@family.HouseNumber</td>
+                    <td>@family.TotalFamilyMembers()</td>
+                    <td><span class="oi oi-circle-x" @onclick="() => RemoveFamily(family)" /></td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>
 
 
 @code {
+    private IList<Family> allFamilies;
 
+    protected override void OnInitialized()
+    {
+        allFamilies = FamilyService.GetFamilies();
+    }
+
+    private void GoToStartAFamily()
+    {
+        return;
+    }
+
+    private void RemoveFamily(Family toRemove)
+    {
+        if (FamilyService.RemoveFamily(toRemove))
+        {
+            allFamilies.Remove(toRemove);
+        }
+    }
 }

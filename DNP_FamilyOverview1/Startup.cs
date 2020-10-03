@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DNP_FamilyOverview1.Data.Families;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
@@ -27,6 +28,7 @@ namespace DNP_FamilyOverview1
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
+            services.AddSingleton<IFamilyService, FamilyService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

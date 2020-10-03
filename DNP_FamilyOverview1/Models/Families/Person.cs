@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
-namespace Models
+namespace DNP_FamilyOverview1.Models.Families
 {
     public class Person
     {

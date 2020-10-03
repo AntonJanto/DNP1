@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Models
+namespace DNP_FamilyOverview1.Models.Families
 {
     public class Child : Person
     {

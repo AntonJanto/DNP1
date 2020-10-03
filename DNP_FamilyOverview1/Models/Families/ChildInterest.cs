@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace Models
+namespace DNP_FamilyOverview1.Models.Families
 {
     public class ChildInterest
     {

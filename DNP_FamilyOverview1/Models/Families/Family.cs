@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace Models
+namespace DNP_FamilyOverview1.Models.Families
 {
     public class Family
     {
@@ -19,6 +19,9 @@ namespace Models
         {
             Adults = new List<Adult>();
         }
+
+        public int TotalFamilyMembers() =>
+            Children!=null ? Adults.Count + Children.Count : Adults.Count;
 
     }
 
