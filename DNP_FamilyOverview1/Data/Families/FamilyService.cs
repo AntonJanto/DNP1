@@ -9,26 +9,41 @@ namespace DNP_FamilyOverview1.Data.Families
 {
     public class FamilyService : IFamilyService
     {
-        private readonly FileContext familyFile;
+        private readonly FileContext familyFileHandler;
 
         public FamilyService()
         {
-            familyFile = new FileContext();
+            familyFileHandler = new FileContext();
         }
+
 
         public IList<Family> GetFamilies()
         {
-            return familyFile.Families;
+            return familyFileHandler.Families;
         }
 
         public bool RemoveFamily(Family toRemove)
         {
-            bool removed = familyFile.Families.Remove(toRemove);
+            bool removed = familyFileHandler.Families.Remove(toRemove);
             if (removed)
             {
-                familyFile.SaveChanges();
+                familyFileHandler.SaveChanges();
             }
             return removed;
+        }
+        public bool AddFamily(Family toAdd)
+        {
+            int max = familyFileHandler.Families.Any() ? familyFileHandler.Families.Max(f => f.Id) : 0;
+            toAdd.Id = ++max;
+            int same = familyFileHandler.Families.Where(f => f.Id == toAdd.Id || (f.HouseNumber == toAdd.HouseNumber && f.StreetName == toAdd.StreetName)).Count();
+            if (same < 1)
+            {
+                familyFileHandler.Families.Add(toAdd);
+                familyFileHandler.SaveChanges();
+                return true;
+            }
+            else
+                return false;
         }
     }
 }

@@ -31,7 +31,7 @@
             @foreach (var family in allFamilies)
             {
                 <tr>
-                    <td>@family.Adults.First().LastName</td>
+                    <td>@(family.Adults.Count > 0 ? family.Adults.First().LastName : "")</td>
                     <td>@family.StreetName</td>
                     <td>@family.HouseNumber</td>
                     <td>@family.TotalFamilyMembers()</td>
@@ -53,7 +53,7 @@
 
     private void GoToStartAFamily()
     {
-        return;
+        NavigationManager.NavigateTo("/startafamily");
     }
 
     private void RemoveFamily(Family toRemove)

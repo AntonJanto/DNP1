@@ -5,11 +5,10 @@ namespace DNP_FamilyOverview1.Models.Families
 {
     public class Family
     {
-
-        //public int Id { get; set; }
+        public int Id { get; set; }
         [Required]
         public string StreetName { get; set; }
-        [Required]
+        [Required, Range(1, int.MaxValue, ErrorMessage ="House number must be greater than 0")]
         public int HouseNumber { get; set; }
         public List<Adult> Adults { get; set; }
         public List<Child> Children { get; set; }

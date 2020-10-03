@@ -10,5 +10,6 @@ namespace DNP_FamilyOverview1.Data.Families
     {
         IList<Family> GetFamilies();
         bool RemoveFamily(Family toRemove);
+        bool AddFamily(Family toAdd);
     }
 }
