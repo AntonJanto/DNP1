@@ -1,0 +1,77 @@
+﻿@page "/adults"
+
+@using DNP_FamilyOverview1.Models.Families
+@using DNP_FamilyOverview1.Data.Families
+
+@inject NavigationManager NavigationManager
+@inject IFamilyService FamilyService
+
+<div class="d-flex justify-content-between">
+    <h2>Adults</h2>
+    <AuthorizeView Policy="Create">
+        <button class="btn btn-primary my-auto rounded p-1 shadow" @onclick="GoToStartAFamily">
+            Add adult
+        </button>
+    </AuthorizeView>
+</div>
+
+<div>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>First name</th>
+                <th>Last name</th>
+                <th>Hair Color</th>
+                <th>Eye Color</th>
+                <th>Age</th>
+                <th>Weight</th>
+                <th>Height</th>
+                <th>Sex</th>
+                <th>Job</th>
+                <AuthorizeView Policy="Delete">
+                    <th>Remove</th>
+                </AuthorizeView>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var adult in allAdults)
+            {
+                <tr>
+                    <td>@adult.FirstName</td>
+                    <td>@adult.LastName</td>
+                    <td>@adult.HairColor</td>
+                    <td>@adult.EyeColor</td>
+                    <td>@adult.Age</td>
+                    <td>@adult.Weight</td>
+                    <td>@adult.Height</td>
+                    <td>@adult.Sex</td>
+                    <td>@adult.JobTitle</td>
+                    <AuthorizeView Policy="Delete">
+                        <td><span class="oi oi-circle-x" @onclick="() => RemoveAdult(adult)" /></td>
+                    </AuthorizeView>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@code {
+    private IList<Adult> allAdults = new List<Adult>();
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        allAdults = FamilyService.GetAdults();
+    }
+
+    private void GoToStartAFamily()
+    {
+        NavigationManager.NavigateTo("/startafamily");
+    }
+
+    private void RemoveAdult(Adult toRemove)
+    {
+        if (FamilyService.RemoveAdult(toRemove))
+            allAdults.Remove(toRemove);
+    }
+}

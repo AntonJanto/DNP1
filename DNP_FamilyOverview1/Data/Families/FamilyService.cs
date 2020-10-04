@@ -45,5 +45,33 @@ namespace DNP_FamilyOverview1.Data.Families
             else
                 return false;
         }
+
+        public IList<Adult> GetAdults()
+        {
+            IList<Family> families = familyFileHandler.Families;
+            IList<Adult> adults = new List<Adult>();
+            foreach (var family in families)
+            {
+                foreach (var adult in family.Adults)
+                {
+                    adults.Add(adult);
+                }
+            }
+            return adults;
+        }
+
+        public bool RemoveAdult(Adult toRemove)
+        {
+            IList<Family> families = familyFileHandler.Families;
+            foreach (var family in families)
+            {
+                if (family.Adults.Contains(toRemove))
+                {
+                    familyFileHandler.SaveChanges();
+                    return family.Adults.Remove(toRemove);
+                }
+            }
+            return false;
+        }
     }
 }
