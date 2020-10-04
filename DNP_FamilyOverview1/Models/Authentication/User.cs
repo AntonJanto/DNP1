@@ -2,10 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace DNP_FamilyOverview1.Models.Authentication
 {
     public class User
     {
+        [Required]
+        [MinLength(2), MaxLength(64)]
+        public string Username { get; set; }
+
+        [Required]
+        [MinLength(5), MaxLength(32)]
+        public string Password { get; set; }
+        public int Permissions { get; set; } = 0;
     }
 }

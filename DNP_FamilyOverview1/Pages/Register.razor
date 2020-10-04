@@ -1,0 +1,84 @@
+﻿@page "/register"
+
+@using DNP_FamilyOverview1.Data.Authentication.Impl
+
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
+
+<AuthorizeView>
+    <Authorized>You are already registered</Authorized>
+    <NotAuthorized>
+        <div class="container-fluid">
+            <!--username-->
+            <div class="row form-group mt-3">
+                <div class="col-6 col-md-5 d-flex justify-content-end">
+                    <label for="username">Username:</label>
+                </div>
+                <div class="col-6 col-md-7">
+                    <input type="text" class="rounded" id="username" @bind-value="@username" />
+                </div>
+            </div>
+            <!--password-->
+            <div class="row form-group">
+                <div class="col-6 col-md-5 d-flex justify-content-end">
+                    <label for="password">Password:</label>
+                </div>
+                <div class="col-6 col-md-7">
+                    <input type="password" class="rounded" id="password" @bind-value="@password" />
+                </div>
+            </div>
+            <!--password again-->
+            <div class="row form-group">
+                <div class="col-6 col-md-5 d-flex justify-content-end">
+                    <label for="passwordagain">Password again:</label>
+                </div>
+                <div class="col-6 col-md-7">
+                    <input type="password" class="rounded" id="passwordagain" @bind-value="@passwordAgain" />
+                </div>
+            </div>
+            <p style="color:red">@errorMessage</p>
+            <button class="btn btn-primary" @onclick="PerformRegister">Register</button>
+        </div>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+
+    private string username;
+    private string password;
+    private string passwordAgain;
+    private string errorMessage;
+
+    [CascadingParameter]
+    protected Task<AuthenticationState> AuthState { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        base.OnInitialized();
+
+        var user = (await AuthState).User;
+        if (user.Identity.IsAuthenticated)
+        {
+            NavigationManager.NavigateTo("/");
+            await JSRuntime.InvokeAsync<string>("alert", "Already logged in.");
+        }
+    }
+
+    private void PerformRegister()
+    {
+        errorMessage = "";
+        try
+        {
+            ((CustomAuthenticationStateProvider)AuthenticationStateProvider).ValidateRegister(username, password, passwordAgain);
+            username = "";
+            password = "";
+            passwordAgain = "";
+            NavigationManager.NavigateTo("/");
+        }
+        catch (Exception e)
+        {
+            errorMessage = e.Message;
+        }
+    }
+}

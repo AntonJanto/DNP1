@@ -1,5 +1,7 @@
 ﻿@page "/startafamily"
 
+@attribute [Authorize (Policy = "Create")]
+
 @using DNP_FamilyOverview1.Models.Families
 @using DNP_FamilyOverview1.Data.Families
 

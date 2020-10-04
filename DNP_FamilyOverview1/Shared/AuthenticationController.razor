@@ -1,0 +1,43 @@
+﻿@namespace DNP_FamilyOverview1.LoginComponent
+@using DNP_FamilyOverview1.Data.Authentication.Impl
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager NavigationManager
+
+<AuthorizeView>
+    <NotAuthorized>
+        <a href="" @onclick="NavigateToLogin">Login</a>
+        <a href="" @onclick="NavigateToRegister">Register</a>
+    </NotAuthorized>
+    <Authorized>
+        <div style="color:red">@errorMessage</div>
+        <a href="" @onclick="PerformLogout">Log out</a>
+    </Authorized>
+</AuthorizeView>
+
+@code {
+    private string errorMessage;
+
+    private void NavigateToRegister()
+    {
+        NavigationManager.NavigateTo("/register");
+    }
+
+    private void NavigateToLogin()
+    {
+
+        NavigationManager.NavigateTo("/login");
+    }
+
+    private async Task PerformLogout()
+    {
+        try
+        {
+            ((CustomAuthenticationStateProvider)AuthenticationStateProvider).Logout();
+            NavigationManager.NavigateTo("/");
+        }
+        catch (Exception e)
+        {
+            errorMessage = e.Message;
+        }
+    }
+}

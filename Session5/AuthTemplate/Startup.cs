@@ -2,19 +2,21 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using DNP_FamilyOverview1.Data.Authentication;
-using DNP_FamilyOverview1.Data.Authentication.Impl;
-using DNP_FamilyOverview1.Data.Families;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using AuthTemplate.Areas.Identity;
+using AuthTemplate.Data;
 
-namespace DNP_FamilyOverview1
+namespace AuthTemplate
 {
     public class Startup
     {
@@ -29,23 +31,15 @@ namespace DNP_FamilyOverview1
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(
+                    Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddSingleton<IFamilyService, FamilyService>();
-            services.AddSingleton<IUserService, UserService>();
-            services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("Create", a =>
-                a.RequireAuthenticatedUser().RequireClaim("Permissions", "0", "1", "2"));
-                options.AddPolicy("Review", a =>
-                a.RequireAuthenticatedUser().RequireClaim("Permissions", "0", "1", "2"));
-                options.AddPolicy("Delete", a =>
-                a.RequireAuthenticatedUser().RequireClaim("Permissions", "2"));
-                options.AddPolicy("Update", a =>
-                a.RequireAuthenticatedUser().RequireClaim("Permissions", "1", "2"));
-
-            });
+            services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
+            services.AddSingleton<WeatherForecastService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -54,6 +48,7 @@ namespace DNP_FamilyOverview1
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage();
             }
             else
             {
@@ -67,8 +62,12 @@ namespace DNP_FamilyOverview1
 
             app.UseRouting();
 
+            app.UseAuthentication();
+            app.UseAuthorization();
+
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllers();
                 endpoints.MapBlazorHub();
                 endpoints.MapFallbackToPage("/_Host");
             });

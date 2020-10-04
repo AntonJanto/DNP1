@@ -9,9 +9,11 @@
 
 <div class="d-flex justify-content-between">
     <h2>Families</h2>
-    <button class="btn btn-primary my-auto rounded p-1 shadow" @onclick="GoToStartAFamily">
-        Start a new family
-    </button>
+    <AuthorizeView Policy="Create">
+        <button class="btn btn-primary my-auto rounded p-1 shadow" @onclick="GoToStartAFamily">
+            Start a new family
+        </button>
+    </AuthorizeView>
 </div>
 
 
@@ -24,7 +26,9 @@
                 <th>Street</th>
                 <th>HouseNumber</th>
                 <th>Family members</th>
-                <th>Remove</th>
+                <AuthorizeView Policy="Delete">
+                    <th>Remove</th>
+                </AuthorizeView>
             </tr>
         </thead>
         <tbody>
@@ -35,7 +39,9 @@
                     <td>@family.StreetName</td>
                     <td>@family.HouseNumber</td>
                     <td>@family.TotalFamilyMembers()</td>
-                    <td><span class="oi oi-circle-x" @onclick="() => RemoveFamily(family)" /></td>
+                    <AuthorizeView Policy="Delete">
+                        <td><span class="oi oi-circle-x" @onclick="() => RemoveFamily(family)" /></td>
+                    </AuthorizeView>
                 </tr>
             }
         </tbody>
