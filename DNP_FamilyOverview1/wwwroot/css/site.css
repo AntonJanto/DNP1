@@ -42,10 +42,10 @@ app {
             margin-left: 1.5rem;
         }
 
-.main .top-row a:first-child {
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
+        .main .top-row a:first-child {
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
 
 .sidebar {
     background-image: linear-gradient(0deg, rgb(112, 19, 33) 5%, #1a0687 90%);
@@ -102,6 +102,21 @@ app {
     padding-top: 1.1rem;
 }
 
+
+icon.adult-counter {
+    font-size: 2rem;
+    margin: auto 2rem;
+    transition: color ease-in-out 100ms;
+}
+
+icon.oi-minus.adult-counter:hover {
+    color: red;
+}
+
+icon.oi-plus.adult-counter:hover {
+    color: green;
+}
+
 .navbar-toggler {
     background-color: rgba(255, 255, 255, 0.1);
 }
@@ -130,12 +145,12 @@ app {
     z-index: 1000;
 }
 
-#blazor-error-ui .dismiss {
-    cursor: pointer;
-    position: absolute;
-    right: 0.75rem;
-    top: 0.5rem;
-}
+    #blazor-error-ui .dismiss {
+        cursor: pointer;
+        position: absolute;
+        right: 0.75rem;
+        top: 0.5rem;
+    }
 
 @media (max-width: 767.98px) {
     .main .top-row:not(.auth) {
@@ -180,5 +195,17 @@ app {
     .sidebar .collapse {
         /* Never collapse the sidebar for wide screens */
         display: block;
+    }
+
+    .start-family-page {
+        margin-left: 2.5rem;
+        margin-right: 10rem;
+    }
+}
+
+
+@media (min-width: 1080px) {
+    .start-family-page {
+        margin-right: 15rem;
     }
 }

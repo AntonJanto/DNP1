@@ -6,7 +6,7 @@
 <AuthorizeView>
     <NotAuthorized>
         <a href="" @onclick="NavigateToLogin">Login</a>
-        <a href="" @onclick="NavigateToRegister">Register</a>
+        <a class="ml-4" href="" @onclick="NavigateToRegister">Register</a>
     </NotAuthorized>
     <Authorized>
         <div style="color:red">@errorMessage</div>

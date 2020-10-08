@@ -9,35 +9,24 @@
 <AuthorizeView>
     <Authorized>You are already registered</Authorized>
     <NotAuthorized>
-        <div class="container-fluid">
+        <h2>Register</h2>
+        <div class="container">
             <!--username-->
-            <div class="row form-group mt-3">
-                <div class="col-6 col-md-5 d-flex justify-content-end">
-                    <label for="username">Username:</label>
-                </div>
-                <div class="col-6 col-md-7">
-                    <input type="text" class="rounded" id="username" @bind-value="@username" />
-                </div>
+            <div class=" form-group mt-3">
+                <label for="username">Username:</label>
+                <input type="text" class="form-control" id="username" @bind-value="@username" />
             </div>
             <!--password-->
-            <div class="row form-group">
-                <div class="col-6 col-md-5 d-flex justify-content-end">
-                    <label for="password">Password:</label>
-                </div>
-                <div class="col-6 col-md-7">
-                    <input type="password" class="rounded" id="password" @bind-value="@password" />
-                </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" class="form-control" id="password" @bind-value="@password" />
             </div>
             <!--password again-->
-            <div class="row form-group">
-                <div class="col-6 col-md-5 d-flex justify-content-end">
-                    <label for="passwordagain">Password again:</label>
-                </div>
-                <div class="col-6 col-md-7">
-                    <input type="password" class="rounded" id="passwordagain" @bind-value="@passwordAgain" />
-                </div>
+            <div class="form-group">
+                <label for="passwordagain">Password again:</label>
+                <input type="password" class="form-control" id="passwordagain" @bind-value="@passwordAgain" />
             </div>
-            <p style="color:red">@errorMessage</p>
+            <span style="color:red">@errorMessage</span>
             <button class="btn btn-primary" @onclick="PerformRegister">Register</button>
         </div>
     </NotAuthorized>

@@ -20,7 +20,7 @@ namespace DNP_FamilyOverview1.Models.Families
         public string EyeColor { get; set; }
         [NotNull, Range(0, 125)]
         public int Age { get; set; }
-        [NotNull, Range(1, 250)]
+        [NotNull, Range(20, 250)]
         public float Weight { get; set; }
         [NotNull, Range(30, 250)]
         public int Height { get; set; }
@@ -68,5 +68,4 @@ namespace DNP_FamilyOverview1.Models.Families
             return new ValidationResult("Valid hair colors are: Brown, Grey, Green, Blue, Amber, Hazel");
         }
     }
-
 }

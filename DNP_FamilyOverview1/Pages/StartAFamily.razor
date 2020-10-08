@@ -1,38 +1,87 @@
 ﻿@page "/startafamily"
-
-@attribute [Authorize (Policy = "Create")]
+@*@attribute [Authorize (Policy = "Create")]*@
 
 @using DNP_FamilyOverview1.Models.Families
 @using DNP_FamilyOverview1.Data.Families
 
 @inject IFamilyService FamilyService
+@inject NavigationManager NavigationManager
 
-<div><h2>Start a Family</h2></div>
-<div>
+<h2>Start a Family</h2>
+<div class="start-family-page">
     <EditForm Model="@newFamily" OnValidSubmit="@AddNewFamily">
-        <DataAnnotationsValidator />
-        <ValidationSummary />
-        <div class="form-group">
-            <label for="streetname">
-                Street name:
-            </label>
-            <InputText id="streetname" placeholder="Kattesund" @bind-Value="@newFamily.StreetName"/>
+        <div class="d-flex flex-column align-items-center">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <div class="form-group">
+                <label for="streetname">
+                    Street name:
+                </label>
+                <InputText class="form-control" id="streetname" placeholder="Kattesund" @bind-Value="@newFamily.StreetName" />
+            </div>
+            <div class="form-group">
+                <label for="housenum">
+                    House Number:
+                </label>
+                <InputNumber class="form-control" id="housenum" placeholder=12 @bind-Value="@newFamily.HouseNumber" />
+            </div>
         </div>
-        <div class="form-group">
-            <label for="housenum">
-                House Number:
-            </label>
-            <InputNumber id="housenum" placeholder=12 @bind-Value="@newFamily.HouseNumber"/>
+
+        @if (adultsInFamily > 0)
+        {
+            <AddAdult AdultNum="1" @bind-TheAdult="adult1" />
+
+            if (adultsInFamily > 1)
+            {
+                <AddAdult AdultNum="2" @bind-TheAdult="adult2" />
+            }
+        }
+
+        <div class="d-flex justify-content-center">
+            @if (adultsInFamily < 2)
+            {
+                <icon class="oi oi-plus adult-counter" @onclick="AddAdult" />
+            }
+            @if (adultsInFamily > 0)
+            {
+                <icon class="oi oi-minus adult-counter" @onclick="DropAdult" />
+            }
+
         </div>
-        <button class="btn btn-primary" type="submit">Create</button>
+
+        <button class="btn btn-primary my-4" type="submit">Create</button>
     </EditForm>
 </div>
 
 @code {
+    private int adultsInFamily = 0;
+
     private Family newFamily = new Family();
+    private Adult adult1 = new Adult();
+    private Adult adult2 = new Adult();
+
+    private void AddAdult()
+    {
+        adultsInFamily++;
+
+    }
+
+    private void DropAdult()
+    {
+        adultsInFamily--;
+    }
 
     private void AddNewFamily()
     {
+        if (adultsInFamily > 0)
+        {
+            newFamily.Adults.Add(adult1);
+            if (adultsInFamily > 1)
+            {
+                newFamily.Adults.Add(adult2);
+            }
+        }
         FamilyService.AddFamily(newFamily);
+        NavigationManager.NavigateTo("/families");
     }
 }

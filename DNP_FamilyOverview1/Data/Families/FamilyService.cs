@@ -35,7 +35,9 @@ namespace DNP_FamilyOverview1.Data.Families
         {
             int max = familyFileHandler.Families.Any() ? familyFileHandler.Families.Max(f => f.Id) : 0;
             toAdd.Id = ++max;
-            int same = familyFileHandler.Families.Where(f => f.Id == toAdd.Id || (f.HouseNumber == toAdd.HouseNumber && f.StreetName == toAdd.StreetName)).Count();
+            int same = familyFileHandler.Families.Where(f => 
+                f.Id == toAdd.Id || (f.HouseNumber == toAdd.HouseNumber && f.StreetName == toAdd.StreetName)).Count();
+
             if (same < 1)
             {
                 familyFileHandler.Families.Add(toAdd);
