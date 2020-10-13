@@ -38,8 +38,6 @@ namespace DNP_FamilyOverview1
             {
                 options.AddPolicy("Create", a =>
                 a.RequireAuthenticatedUser().RequireClaim("Permissions", "0", "1", "2"));
-                options.AddPolicy("Review", a =>
-                a.RequireAuthenticatedUser().RequireClaim("Permissions", "0", "1", "2"));
                 options.AddPolicy("Delete", a =>
                 a.RequireAuthenticatedUser().RequireClaim("Permissions", "2"));
                 options.AddPolicy("Update", a =>

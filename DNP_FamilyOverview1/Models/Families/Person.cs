@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Net.NetworkInformation;
 
 namespace DNP_FamilyOverview1.Models.Families
 {
@@ -10,8 +11,10 @@ namespace DNP_FamilyOverview1.Models.Families
 
         public int Id { get; set; }
         [NotNull]
+        [NotEmptyString]
         public string FirstName { get; set; }
         [NotNull]
+        [NotEmptyString]
         public string LastName { get; set; }
         [ValidHairColor]
         public string HairColor { get; set; }
@@ -25,6 +28,7 @@ namespace DNP_FamilyOverview1.Models.Families
         [NotNull, Range(30, 250)]
         public int Height { get; set; }
         [NotNull]
+        [NotEmptyString]
         public string Sex { get; set; }
 
         public void Update(Person toUpdate)
@@ -39,15 +43,38 @@ namespace DNP_FamilyOverview1.Models.Families
             LastName = toUpdate.LastName;
         }
 
+        public override bool Equals(object obj)
+        {
+            if ((obj == null) || !this.GetType().Equals(obj.GetType()))
+            {
+                return false;
+            }
+            else
+            {
+                Person p = (Person)obj;
+                return (FirstName == p.FirstName && LastName == p.LastName && Age == p.Age && Weight == p.Weight && Height == p.Height &&Sex == p.Sex) || (Id == p.Id);
+            }
+            }
+
+
     }
 
+    public class NotEmptyString : ValidationAttribute
+    {
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        {
+            if (value != null && value.ToString() != "")
+                return ValidationResult.Success;
+            return new ValidationResult($"{validationContext.DisplayName} is empty");
+        }
+    }
     public class ValidHairColor : ValidationAttribute
     {
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             List<string> valid = new[] {"blonde", "red", "brown", "black",
             "white", "grey", "blue", "green", "leverpostej"}.ToList();
-            if (valid == null || valid.Contains(value.ToString().ToLower()))
+            if (value != null && (valid == null || valid.Contains(value.ToString().ToLower())))
             {
                 return ValidationResult.Success;
             }
@@ -61,7 +88,7 @@ namespace DNP_FamilyOverview1.Models.Families
         {
             List<string> valid = new[] {"brown", "grey", "green", "blue",
             "amber", "hazel"}.ToList();
-            if (valid != null && valid.Contains(value.ToString().ToLower()))
+            if (value != null && (valid != null && valid.Contains(value.ToString().ToLower())))
             {
                 return ValidationResult.Success;
             }

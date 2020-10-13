@@ -84,7 +84,7 @@ else
         {
             filterByUserId = int.Parse(evt.Value.ToString());
         }
-        catch (Exception e)
+        catch (Exception)
         {
             filterByUserId = null;
         }
@@ -98,7 +98,7 @@ else
         {
             filterByIsCompleted = bool.Parse(evt.Value.ToString());
         }
-        catch (Exception e)
+        catch (Exception)
         {
             filterByIsCompleted = null;
         }

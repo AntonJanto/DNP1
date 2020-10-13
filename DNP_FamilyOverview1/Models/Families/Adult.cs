@@ -1,3 +1,4 @@
+using System.Buffers.Text;
 using System.Text.Json;
 
 namespace DNP_FamilyOverview1.Models.Families
@@ -17,5 +18,17 @@ namespace DNP_FamilyOverview1.Models.Families
             base.Update(toUpdate);
         }
 
+        public override bool Equals(object obj)
+        {
+            if ((obj == null) || !this.GetType().Equals(obj.GetType()))
+            {
+                return false;
+            }
+            else
+            {
+                Adult a = (Adult)obj;
+                return base.Equals(a) && JobTitle == a.JobTitle;
+            }
+        }
     }
 }

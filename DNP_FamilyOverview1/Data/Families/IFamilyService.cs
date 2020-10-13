@@ -11,6 +11,7 @@ namespace DNP_FamilyOverview1.Data.Families
         IList<Family> GetFamilies();
         bool RemoveFamily(Family toRemove);
         bool AddFamily(Family toAdd);
+        bool AddAdultToFamily(Adult adultToAdd, Family familyToJoin);
         IList<Adult> GetAdults();
         bool RemoveAdult(Adult toRemove);
     }

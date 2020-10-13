@@ -1,4 +1,5 @@
-﻿@page "/adults"
+﻿@page "/adults/{streetname}"
+@page "/adults"
 
 @using DNP_FamilyOverview1.Models.Families
 @using DNP_FamilyOverview1.Data.Families
@@ -13,6 +14,17 @@
             Add adult
         </button>
     </AuthorizeView>
+</div>
+
+<h4 class="text-right">Filters</h4>
+<div class="row">
+    <div class="col-sm mb-1" />
+    <div class="col-sm mb-1">
+        <input type="text" placeholder="First name" class="form-control" @oninput="@((arg) => FilterByFirstName(arg))" />
+    </div>
+    <div class="col-sm mb-1">
+        <input type="text" placeholder="Last name" class="form-control" @oninput="@((arg) => FilterByLastName(arg))" />
+    </div>
 </div>
 
 <div>
@@ -34,7 +46,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var adult in allAdults)
+            @foreach (var adult in displayedAdults)
             {
                 <tr>
                     <td>@adult.FirstName</td>
@@ -56,14 +68,31 @@
 </div>
 
 @code {
-    private IList<Adult> allAdults = new List<Adult>();
+    private IList<Family> allFamilies;
+    private IList<Adult> displayedAdults;
+
+    private string? filterByLastName;
+    private string? filterByFirstName;
+
+    private string? streetName = "";
+    [Parameter]
+    public string StreetName
+    {
+        get => streetName;
+        set => streetName = value?.Replace("_", " ");
+    }
+
 
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        allAdults = FamilyService.GetAdults();
+        allFamilies = FamilyService.GetFamilies();
+        displayedAdults = ActOnAdultsInAllFamilies((family, adult) => true);
+        if (NavigationManager.Uri.Contains("/adults/"))
+            FilterByStreetName();
     }
 
+    //Methods
     private void GoToStartAFamily()
     {
         NavigationManager.NavigateTo("/startafamily");
@@ -72,6 +101,84 @@
     private void RemoveAdult(Adult toRemove)
     {
         if (FamilyService.RemoveAdult(toRemove))
-            allAdults.Remove(toRemove);
+        {
+            ActOnAdultsInAllFamilies((family, adult) =>
+            {
+                if (adult.Id == toRemove.Id)
+                {
+                    family.Adults.Remove(adult);
+                }
+                return false;
+            });
+        }
+    }
+
+    private void FilterByFirstName(ChangeEventArgs arg)
+    {
+        filterByFirstName = null;
+
+        try
+        {
+            filterByFirstName = arg.Value.ToString().ToLower();
+            filterByFirstName = filterByFirstName == "" ? null : filterByFirstName;
+        }
+        catch (Exception)
+        {
+            filterByFirstName = null;
+        }
+        ExecuteFilter();
+    }
+
+    private void FilterByLastName(ChangeEventArgs arg)
+    {
+        filterByLastName = null;
+
+        try
+        {
+            filterByLastName = arg.Value.ToString().ToLower();
+            filterByLastName = filterByLastName == "" ? null : filterByLastName;
+        }
+        catch (Exception)
+        {
+            filterByLastName = null;
+        }
+        ExecuteFilter();
+    }
+
+    private void FilterByStreetName()
+    {
+        if (StreetName == "")
+            StreetName = null;
+
+        ExecuteFilter();
+    }
+
+    private void ExecuteFilter()
+    {
+        displayedAdults = ActOnAdultsInAllFamilies((family, adult) =>
+            (filterByLastName != null && adult.LastName.ToLower().Contains(filterByLastName) || filterByLastName == null) &&
+            (filterByFirstName != null && adult.FirstName.ToLower().Contains(filterByFirstName) || filterByFirstName == null) &&
+            (streetName != null && family.StreetName.ToLower().Contains(streetName.ToLower()) || streetName == null)
+        );
+    }
+
+    //Delegate experiment
+    private delegate bool AdultsInFamiliesAction(Family family, Adult adult);
+
+    private IList<Adult> ActOnAdultsInAllFamilies(AdultsInFamiliesAction action)
+    {
+        IList<Adult> result = new List<Adult>();
+
+        foreach (var family in allFamilies)
+        {
+            foreach (var adult in family.Adults)
+            {
+                if (action(family, adult))
+                {
+                    result.Add(adult);
+                }
+            }
+        }
+        return result;
     }
 }

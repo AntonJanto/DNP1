@@ -1,11 +1,10 @@
 ﻿@page "/startafamily"
-@*@attribute [Authorize (Policy = "Create")]*@
+@attribute [Authorize (Policy = "Create")]
 
 @using DNP_FamilyOverview1.Models.Families
 @using DNP_FamilyOverview1.Data.Families
 
 @inject IFamilyService FamilyService
-@inject NavigationManager NavigationManager
 
 <h2>Start a Family</h2>
 <div class="start-family-page">
@@ -13,6 +12,8 @@
         <div class="d-flex flex-column align-items-center">
             <DataAnnotationsValidator />
             <ValidationSummary />
+            <p style="color:green;">@message</p>
+            <p style="color:red;">@error</p>
             <div class="form-group">
                 <label for="streetname">
                     Street name:
@@ -29,11 +30,11 @@
 
         @if (adultsInFamily > 0)
         {
-            <AddAdult AdultNum="1" @bind-TheAdult="adult1" />
+            <AddAdult AdultNum="1" @bind-TheAdult="adult1" @bind-AdultFormContext="adult1Context" />
 
             if (adultsInFamily > 1)
             {
-                <AddAdult AdultNum="2" @bind-TheAdult="adult2" />
+                <AddAdult AdultNum="2" @bind-TheAdult="adult2" @bind-AdultFormContext="adult2Context" />
             }
         }
 
@@ -54,34 +55,73 @@
 </div>
 
 @code {
+    //Family setup
     private int adultsInFamily = 0;
-
     private Family newFamily = new Family();
+
+    //adult 1
     private Adult adult1 = new Adult();
+    private EditContext adult1Context;
+
+    //adult 2
     private Adult adult2 = new Adult();
+    private EditContext adult2Context;
 
-    private void AddAdult()
+    private string error;
+    private string message;
+
+    //Methods
+    protected override void OnInitialized()
     {
-        adultsInFamily++;
-
+        adult1Context = new EditContext(adult1);
+        adult2Context = new EditContext(adult2);
+        base.OnInitialized();
     }
 
-    private void DropAdult()
-    {
-        adultsInFamily--;
-    }
+    private void AddAdult() => adultsInFamily++;
+
+    private void DropAdult() => adultsInFamily--;
 
     private void AddNewFamily()
     {
-        if (adultsInFamily > 0)
+        message = "";
+        error = "";
+        try
         {
-            newFamily.Adults.Add(adult1);
-            if (adultsInFamily > 1)
+            if (adultsInFamily == 0)
             {
-                newFamily.Adults.Add(adult2);
+                if (FamilyService.AddFamily(newFamily))
+                    message = "Family  created";
+            }
+            //if only one adult is selected add adult 1 to the existing family
+            else if (adultsInFamily == 1)
+            {
+                if (adult1Context.Validate())
+                {
+                    if (FamilyService.AddFamily(newFamily))
+                    {
+                        message = "Family  created";
+                        FamilyService.AddAdultToFamily(adult1, newFamily);
+                    }
+                }
+            }
+            else if (adultsInFamily == 2)
+            {
+                if (adult1Context.Validate() && adult2Context.Validate())
+                {
+                    if (FamilyService.AddFamily(newFamily))
+                    {
+                        message = "Family  created";
+                        FamilyService.AddAdultToFamily(adult1, newFamily);
+                        FamilyService.AddAdultToFamily(adult2, newFamily);
+                    }
+                }
             }
         }
-        FamilyService.AddFamily(newFamily);
-        NavigationManager.NavigateTo("/families");
+        catch (Exception e)
+        {
+            error = e.Message;
+
+        }
     }
 }

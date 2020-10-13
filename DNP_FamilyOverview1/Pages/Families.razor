@@ -15,10 +15,21 @@
         </button>
     </AuthorizeView>
 </div>
+<h4 class="text-right">Filters</h4>
+<div class="row">
+    <div class="col-sm-2 col-md-1 col-lg-5" />
+    <div class="col-sm-4 col-md-5 col-lg-3 mb-1">
+        <input type="text" placeholder="Street name" class="form-control" @oninput="@((arg) => FilterByStreetName(arg))" />
+    </div>
+    <div class="col-sm-3 col-md-3 col-lg-2 mb-1">
+        <input type="text" placeholder="Min members" class="form-control" @oninput="@((arg) => FilterByMinMembers(arg))" />
+    </div>
+    <div class="col-sm-3 col-md-3 col-lg-2 mb-1">
+        <input type="text" placeholder="Max members" class="form-control" @oninput="@((arg) => FilterByMaxMembers(arg))" />
+    </div>
+</div>
 
-
-
-<div>
+<div class="mt-2">
     <table class="table table-striped">
         <thead>
             <tr>
@@ -32,11 +43,11 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var family in allFamilies)
+            @foreach (var family in displayedFamilies)
             {
                 <tr>
                     <td>@(family.Adults.Count > 0 ? family.Adults.First().LastName : "")</td>
-                    <td>@family.StreetName</td>
+                    <td @onclick="@(() => GoToAdultsFilteredByStreet(family.StreetName))">@family.StreetName</td>
                     <td>@family.HouseNumber</td>
                     <td>@family.TotalFamilyMembers()</td>
                     <AuthorizeView Policy="Delete">
@@ -51,15 +62,27 @@
 
 @code {
     private IList<Family> allFamilies;
+    private IList<Family> displayedFamilies;
+
+    private string? filterByStreet;
+    private int? filterMembersMin;
+    private int? filterMembersMax;
 
     protected override void OnInitialized()
     {
         allFamilies = FamilyService.GetFamilies();
+        displayedFamilies = allFamilies;
     }
 
     private void GoToStartAFamily()
     {
         NavigationManager.NavigateTo("/startafamily");
+    }
+
+    private void GoToAdultsFilteredByStreet(string street)
+    {
+        if (!String.IsNullOrEmpty(street))
+            NavigationManager.NavigateTo($"/adults/{street.Replace(" ","_")}");
     }
 
     private void RemoveFamily(Family toRemove)
@@ -68,5 +91,58 @@
         {
             allFamilies.Remove(toRemove);
         }
+    }
+
+    private void FilterByStreetName(ChangeEventArgs args)
+    {
+        filterByStreet = null;
+        try
+        {
+            filterByStreet = args.Value.ToString().ToLower();
+            filterByStreet = filterByStreet == "" ? null : filterByStreet;
+        }
+        catch (Exception)
+        {
+            filterByStreet = null;
+        }
+        ExecuteFilter();
+    }
+
+    private void FilterByMinMembers(ChangeEventArgs args)
+    {
+        filterMembersMin = null;
+
+        try
+        {
+            filterMembersMin = int.Parse(args.Value.ToString());
+        }
+        catch (Exception)
+        {
+            filterMembersMin = null;
+        }
+        ExecuteFilter();
+    }
+
+    private void FilterByMaxMembers(ChangeEventArgs args)
+    {
+        filterMembersMax = null;
+
+        try
+        {
+            filterMembersMax = int.Parse(args.Value.ToString());
+        }
+        catch (Exception)
+        {
+            filterMembersMax = null;
+        }
+        ExecuteFilter();
+    }
+
+    private void ExecuteFilter()
+    {
+        displayedFamilies = allFamilies.Where(fam =>
+        ((filterByStreet != null && fam.StreetName.ToLower().Contains(filterByStreet) || filterByStreet == null) &&
+        (filterMembersMin != null && fam.TotalFamilyMembers() >= filterMembersMin || filterMembersMin == null) &&
+        (filterMembersMax != null && fam.TotalFamilyMembers() <= filterMembersMax || filterMembersMax == null))).ToList();
     }
 }
