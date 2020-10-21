@@ -18,5 +18,15 @@
     "Username": "borec",
     "Password": "olala",
     "Permissions": 0
+  },
+  {
+    "Username": "Tonko",
+    "Password": "password",
+    "Permissions": 0
+  },
+  {
+    "Username": "Tonko1",
+    "Password": "password",
+    "Permissions": 0
   }
 ]

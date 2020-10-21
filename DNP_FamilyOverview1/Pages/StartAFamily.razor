@@ -1,5 +1,5 @@
 ﻿@page "/startafamily"
-@attribute [Authorize (Policy = "Create")]
+@attribute [Authorize(Policy = "Create")]
 
 @using DNP_FamilyOverview1.Models.Families
 @using DNP_FamilyOverview1.Data.Families
@@ -96,7 +96,8 @@
             //if only one adult is selected add adult 1 to the existing family
             else if (adultsInFamily == 1)
             {
-                if (adult1Context.Validate())
+                var ad1valid = adult1Context.Validate();
+                if (ad1valid)
                 {
                     if (FamilyService.AddFamily(newFamily))
                     {
@@ -107,7 +108,9 @@
             }
             else if (adultsInFamily == 2)
             {
-                if (adult1Context.Validate() && adult2Context.Validate())
+                var ad1valid = adult1Context.Validate();
+                var ad2valid = adult2Context.Validate();
+                if (ad1valid && ad2valid)
                 {
                     if (FamilyService.AddFamily(newFamily))
                     {
