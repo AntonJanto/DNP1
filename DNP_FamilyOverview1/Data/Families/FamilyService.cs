@@ -98,8 +98,9 @@ namespace DNP_FamilyOverview1.Data.Families
             {
                 if (family.Adults.Contains(toRemove))
                 {
+                    var removed = family.Adults.Remove(toRemove);
                     familyFileHandler.SaveChanges();
-                    return family.Adults.Remove(toRemove);
+                    return removed;
                 }
             }
             return false;
