@@ -61,7 +61,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Server03x03", "Session3\Exe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Client03x03", "Session3\Exercise03x03\Client03x03\Client03x03.csproj", "{82F80F29-25BC-4792-916D-FCEF6473B463}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Session4", "Session4", "{7D40A560-68BC-4C00-AEBB-4C465FCA027C}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Session4_TODO", "Session4_TODO", "{7D40A560-68BC-4C00-AEBB-4C465FCA027C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorApp", "Session4\BlazorApp\BlazorApp.csproj", "{D4B0B60C-E8D9-4717-B534-54620B6127CB}"
 EndProject
@@ -73,7 +73,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Session5", "Session5", "{A6
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Auth1", "Session5\Auth1\Auth1.csproj", "{31D09E09-482E-474D-A63B-8D68130C9200}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthTemplate", "Session5\AuthTemplate\AuthTemplate.csproj", "{7B712BA2-699D-467F-A7EF-489C3057FB00}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthTemplate", "Session5\AuthTemplate\AuthTemplate.csproj", "{7B712BA2-699D-467F-A7EF-489C3057FB00}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

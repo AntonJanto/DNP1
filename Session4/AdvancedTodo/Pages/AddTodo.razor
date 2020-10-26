@@ -24,9 +24,9 @@
 @code {
     private Todo newTodoItem = new Todo();
 
-    private void AddNewTodo()
+    private async void AddNewTodo()
     {
-        TodoService.AddTodo(newTodoItem);
+        await TodoService.AddTodoAsync(newTodoItem);
         NavigationManager.NavigateTo("/todos");
     }
 }

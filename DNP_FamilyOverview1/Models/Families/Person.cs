@@ -3,30 +3,47 @@ using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net.NetworkInformation;
+using System.Text.Json.Serialization;
 
 namespace DNP_FamilyOverview1.Models.Families
 {
     public class Person
     {
-
+        [JsonPropertyName("id")]
         public int Id { get; set; }
+
+        [JsonPropertyName("firstName")]
         [NotNull]
         [NotEmptyString]
         public string FirstName { get; set; }
+        
+        [JsonPropertyName("lastName")]
         [NotNull]
         [NotEmptyString]
         public string LastName { get; set; }
+
+        [JsonPropertyName("hairColor")]
         [ValidHairColor]
         public string HairColor { get; set; }
+
+        [JsonPropertyName("eyeColor")]
         [NotNull]
         [ValidEyeColor]
         public string EyeColor { get; set; }
+
+        [JsonPropertyName("age")]
         [NotNull, Range(0, 125)]
         public int Age { get; set; }
+
+        [JsonPropertyName("weight")]
         [NotNull, Range(20, 250)]
         public float Weight { get; set; }
+
+        [JsonPropertyName("height")]
         [NotNull, Range(30, 250)]
         public int Height { get; set; }
+
+        [JsonPropertyName("sex")]
         [NotNull]
         [NotEmptyString]
         public string Sex { get; set; }

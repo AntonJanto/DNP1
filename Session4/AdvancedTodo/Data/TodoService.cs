@@ -27,7 +27,7 @@ namespace AdvancedTodo.Data
             }
         }
 
-        public void AddTodo(Todo todo)
+        public async Task AddTodoAsync(Todo todo)
         {
             int max = _todos.Any() ? _todos.Max(todo => todo.TodoID) : 0;
             todo.TodoID = (++max);
@@ -35,14 +35,14 @@ namespace AdvancedTodo.Data
             WriteTodosToFile();
         }
 
-        public void RemoveTodo(Todo todo)
+        public async Task RemoveTodoAsync(Todo todo)
         {
             Todo toRemove = _todos.First(t => t.TodoID == todo.TodoID);
             _todos.Remove(toRemove);
             WriteTodosToFile();
         }
 
-        public void UpdateTodo(Todo todo)
+        public async Task UpdateTodoAsync(Todo todo)
         {
             Todo toUpdate = _todos.First(t => t.TodoID == todo.TodoID);
             toUpdate.IsCompleted = todo.IsCompleted;
@@ -55,7 +55,7 @@ namespace AdvancedTodo.Data
             File.WriteAllText(_todoFile, productAsJson);
         }
 
-        public IList<Todo> GetTodos()
+        public async Task<IList<Todo>> GetTodosAsync()
         {
             return new List<Todo>(_todos);
         } 

@@ -28,7 +28,7 @@ namespace AdvancedTodo
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddSingleton<ITodoService, TodoService>();
+            services.AddSingleton<ITodoService, CloudTodoService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

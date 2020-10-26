@@ -43,17 +43,24 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var family in displayedFamilies)
+            @if (displayedFamilies != null)
             {
-                <tr>
-                    <td>@(family.Adults.Count > 0 ? family.Adults.First().LastName : "")</td>
-                    <td @onclick="@(() => GoToAdultsFilteredByStreet(family.StreetName))">@family.StreetName</td>
-                    <td>@family.HouseNumber</td>
-                    <td>@family.TotalFamilyMembers()</td>
-                    <AuthorizeView Policy="Delete">
-                        <td><span class="oi oi-circle-x" @onclick="() => RemoveFamily(family)" /></td>
-                    </AuthorizeView>
-                </tr>
+                @foreach (var family in displayedFamilies)
+                {
+                    <tr>
+                        <td>@(family.Adults.Count > 0 ? family.Adults.First().LastName : "")</td>
+                        <td @onclick="@(() => GoToAdultsFilteredByStreet(family.StreetName))">@family.StreetName</td>
+                        <td>@family.HouseNumber</td>
+                        <td>@family.TotalFamilyMembers()</td>
+                        <AuthorizeView Policy="Delete">
+                            <td><span class="oi oi-circle-x" @onclick="() => RemoveFamily(family)" /></td>
+                        </AuthorizeView>
+                    </tr>
+                }
+            }
+            else
+            {
+                <h3>Loading...</h3>
             }
         </tbody>
     </table>
@@ -68,9 +75,9 @@
     private int? filterMembersMin;
     private int? filterMembersMax;
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        allFamilies = FamilyService.GetFamilies();
+        allFamilies = await FamilyService.GetFamiliesAsync();
         displayedFamilies = allFamilies;
     }
 
@@ -82,14 +89,16 @@
     private void GoToAdultsFilteredByStreet(string street)
     {
         if (!String.IsNullOrEmpty(street))
-            NavigationManager.NavigateTo($"/adults/{street.Replace(" ","_")}");
+            NavigationManager.NavigateTo($"/adults/{street.Replace(" ", "_")}");
     }
 
-    private void RemoveFamily(Family toRemove)
+    private async void RemoveFamily(Family toRemove)
     {
-        if (FamilyService.RemoveFamily(toRemove))
+        var removed = await FamilyService.RemoveFamilyAsync(toRemove);
+        if (removed)
         {
             allFamilies.Remove(toRemove);
+            ExecuteFilter();
         }
     }
 

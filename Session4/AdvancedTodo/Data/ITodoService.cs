@@ -1,13 +1,14 @@
 ﻿using AdvancedTodo.Models;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace AdvancedTodo.Data
 {
     public interface ITodoService
     {
-        IList<Todo> GetTodos();
-        void AddTodo(Todo todo);
-        void RemoveTodo(Todo todo);
-        void UpdateTodo(Todo todo);
+        Task<IList<Todo>> GetTodosAsync();
+        Task AddTodoAsync(Todo todo);
+        Task RemoveTodoAsync(Todo todo);
+        Task UpdateTodoAsync(Todo todo);
     }
 }

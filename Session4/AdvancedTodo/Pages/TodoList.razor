@@ -71,9 +71,9 @@ else
     private int? filterByUserId;
     private bool? filterByIsCompleted;
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        allTodos = TodoService.GetTodos();
+        allTodos =  await TodoService.GetTodosAsync();
         showTodos = allTodos;
     }
 
@@ -112,17 +112,17 @@ else
         (filterByIsCompleted != null && t.IsCompleted == filterByIsCompleted || filterByIsCompleted == null)).ToList();
     }
 
-    private void RemoveTodo(Todo todo)
+    private async void RemoveTodo(Todo todo)
     {
         Todo todoToRemove = allTodos.First(t => t.TodoID == todo.TodoID);
-        TodoService.RemoveTodo(todo);
+        await TodoService.RemoveTodoAsync(todo);
         allTodos.Remove(todoToRemove);
     }
 
-    private void CompletedChange(ChangeEventArgs evt, Todo todo)
+    private async void CompletedChange(ChangeEventArgs evt, Todo todo)
     {
         todo.IsCompleted = (bool)evt.Value;
-        TodoService.UpdateTodo(todo);
+        await TodoService.UpdateTodoAsync(todo);
     }
 
 

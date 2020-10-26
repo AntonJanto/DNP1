@@ -17,12 +17,12 @@ namespace DNP_FamilyOverview1.Data.Families
         }
 
 
-        public IList<Family> GetFamilies()
+        public async Task<IList<Family>> GetFamiliesAsync()
         {
             return familyFileHandler.Families;
         }
 
-        public bool RemoveFamily(Family toRemove)
+        public async Task<bool> RemoveFamilyAsync(Family toRemove)
         {
             bool removed = familyFileHandler.Families.Remove(toRemove);
             if (removed)
@@ -31,15 +31,12 @@ namespace DNP_FamilyOverview1.Data.Families
             }
             return removed;
         }
-        public bool AddFamily(Family toAdd)
+        public async Task<bool> AddFamilyAsync(Family toAdd)
         {
             IList<Family> families = familyFileHandler.Families;
 
-            int max = families.Any() ? families.Max(f => f.Id) : 0;
-
-            toAdd.Id = ++max;
             int same = families.Where(f =>
-                (f.Id == toAdd.Id || (f.HouseNumber == toAdd.HouseNumber && f.StreetName == toAdd.StreetName))).Count();
+                (f.HouseNumber == toAdd.HouseNumber && f.StreetName == toAdd.StreetName)).Count();
 
             if (same < 1)
             {
@@ -50,7 +47,7 @@ namespace DNP_FamilyOverview1.Data.Families
             else
                 throw new Exception("This family already exists");
         }
-        public bool AddAdultToFamily(Adult adultToAdd, Family familyToJoin)
+        public async Task<bool> AddAdultToFamilyAsync(Adult adultToAdd, Family familyToJoin)
         {
             IList<Family> families = familyFileHandler.Families;
             IList<Adult> adults = CollectAdults(families);
@@ -83,15 +80,7 @@ namespace DNP_FamilyOverview1.Data.Families
             }
         }
 
-        public IList<Adult> GetAdults()
-        {
-            IList<Family> families = familyFileHandler.Families;
-            IList<Adult> adults = CollectAdults(families);
-            return adults;
-        }
-
-
-        public bool RemoveAdult(Adult toRemove)
+        public async Task<bool> RemoveAdultAsync(Adult toRemove)
         {
             IList<Family> families = familyFileHandler.Families;
             foreach (var family in families)

@@ -45,25 +45,33 @@
                 </AuthorizeView>
             </tr>
         </thead>
-        <tbody>
-            @foreach (var adult in displayedAdults)
-            {
-                <tr>
-                    <td>@adult.FirstName</td>
-                    <td>@adult.LastName</td>
-                    <td>@adult.HairColor</td>
-                    <td>@adult.EyeColor</td>
-                    <td>@adult.Age</td>
-                    <td>@adult.Weight</td>
-                    <td>@adult.Height</td>
-                    <td>@adult.Sex</td>
-                    <td>@adult.JobTitle</td>
-                    <AuthorizeView Policy="Delete">
-                        <td><span class="oi oi-circle-x" @onclick="() => RemoveAdult(adult)" /></td>
-                    </AuthorizeView>
-                </tr>
-            }
-        </tbody>
+        @if (displayedAdults != null)
+        {
+            <tbody>
+                @foreach (var adult in displayedAdults)
+                {
+                    <tr>
+                        <td>@adult.FirstName</td>
+                        <td>@adult.LastName</td>
+                        <td>@adult.HairColor</td>
+                        <td>@adult.EyeColor</td>
+                        <td>@adult.Age</td>
+                        <td>@adult.Weight</td>
+                        <td>@adult.Height</td>
+                        <td>@adult.Sex</td>
+                        <td>@adult.JobTitle</td>
+                        <AuthorizeView Policy="Delete">
+                            <td><span class="oi oi-circle-x" @onclick="() => RemoveAdult(adult)" /></td>
+                        </AuthorizeView>
+                    </tr>
+                }
+
+            </tbody>
+        }
+        else
+        {
+            <h2>Loading...</h2>
+        }
     </table>
 </div>
 
@@ -83,11 +91,11 @@
     }
 
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         base.OnInitialized();
-        allFamilies = FamilyService.GetFamilies();
-        displayedAdults = ActOnAdultsInAllFamilies((family, adult) => true);
+        allFamilies = await FamilyService.GetFamiliesAsync();
+        displayedAdults =  ActOnAdultsInAllFamilies((family, adult) => true);
         if (NavigationManager.Uri.Contains("/adults/"))
             FilterByStreetName();
     }
@@ -98,9 +106,10 @@
         NavigationManager.NavigateTo("/startafamily");
     }
 
-    private void RemoveAdult(Adult toRemove)
+    private async Task RemoveAdult(Adult toRemove)
     {
-        if (FamilyService.RemoveAdult(toRemove))
+        var removed = await FamilyService.RemoveAdultAsync(toRemove);
+        if (removed)
         {
             ActOnAdultsInAllFamilies((family, adult) =>
             {
@@ -111,7 +120,6 @@
                 return false;
             });
         }
-        ExecuteFilter();
     }
 
     private void FilterByFirstName(ChangeEventArgs arg)

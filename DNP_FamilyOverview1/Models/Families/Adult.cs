@@ -1,10 +1,11 @@
-using System.Buffers.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace DNP_FamilyOverview1.Models.Families
 {
     public class Adult : Person
     {
+        [JsonPropertyName("jobTitle")]
         public string JobTitle { get; set; }
 
         public override string ToString()

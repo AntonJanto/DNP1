@@ -8,11 +8,10 @@ namespace DNP_FamilyOverview1.Data.Families
 {
     public interface IFamilyService
     {
-        IList<Family> GetFamilies();
-        bool RemoveFamily(Family toRemove);
-        bool AddFamily(Family toAdd);
-        bool AddAdultToFamily(Adult adultToAdd, Family familyToJoin);
-        IList<Adult> GetAdults();
-        bool RemoveAdult(Adult toRemove);
+        Task<IList<Family>> GetFamiliesAsync();
+        Task<bool> RemoveFamilyAsync(Family toRemove);
+        Task<bool> AddFamilyAsync(Family toAdd);
+        Task<bool> AddAdultToFamilyAsync(Adult adultToAdd, Family familyToJoin);
+        Task<bool> RemoveAdultAsync(Adult toRemove);
     }
 }
