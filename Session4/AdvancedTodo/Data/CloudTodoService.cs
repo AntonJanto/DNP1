@@ -11,7 +11,7 @@ namespace AdvancedTodo.Data
 {
     public class CloudTodoService : ITodoService
     {
-        private readonly string URI = "https://jsonplaceholder.typicode.com/todos";
+        private readonly string URI = "http://localhost:5002/api/todos";
         public async Task AddTodoAsync(Todo todo)
         {
             HttpClient client = new HttpClient();
@@ -26,17 +26,17 @@ namespace AdvancedTodo.Data
             return result;
         }
 
-        public async Task RemoveTodoAsync(Todo todo)
+        public async Task RemoveTodoAsync(int id)
         {
             HttpClient client = new HttpClient();
-            await client.DeleteAsync(URI + $"?TodoId={todo.TodoID}");
+            await client.DeleteAsync(URI + $"/{id}");
         }
 
         public async Task UpdateTodoAsync(Todo todo)
         {
-            var todoHttpContext = new StringContent(JsonSerializer.Serialize(todo.TodoID), Encoding.UTF8, "application/json");
             HttpClient client = new HttpClient();
-            await client.PatchAsync(URI + $"?TodoId={todo.TodoID}", todoHttpContext);
+            var todoHttpContext = new StringContent(JsonSerializer.Serialize(todo), Encoding.UTF8, "application/json");
+            await client.PatchAsync(URI + $"/{todo.TodoID}", todoHttpContext);
         }
     }
 }

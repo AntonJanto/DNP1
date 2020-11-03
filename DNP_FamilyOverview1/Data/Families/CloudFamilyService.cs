@@ -15,58 +15,17 @@ namespace DNP_FamilyOverview1.Data.Families
         private readonly string url = "http://dnp.metamate.me";
         private readonly HttpClient client = new HttpClient();
 
-
-        public async Task<bool> AddAdultToFamilyAsync(Adult adultToAdd, Family familyToJoin)
-        {
-            IList<Family> families = await GetFamiliesAsync();
-            IList<Adult> adults = CollectAdults(families);
-            Family family;
-
-            try
-            {
-                family = families.First(f => f.StreetName == familyToJoin.StreetName && f.HouseNumber == familyToJoin.HouseNumber);
-            }
-            catch (ArgumentNullException)
-            {
-                return false;
-            }
-
-            if (family.Adults.Count < 2)
-            {
-                int maxId = adults.Any() ? adults.Max(a => a.Id) : 0;
-
-                if (adults.Any(a => a.Equals(adultToAdd)))
-                    throw new Exception($"{adultToAdd.FirstName} {adultToAdd.LastName} cannot lead a double life.");
-
-                adultToAdd.Id = ++maxId;
-                family.Adults.Add(adultToAdd);
-                StringContent familyAsJson = new StringContent(JsonSerializer.Serialize(family), Encoding.UTF8, "application/json");
-
-                var response = await client.PutAsync(url + "/families", familyAsJson);
-                return response.IsSuccessStatusCode;
-            }
-            else
-            {
-                throw new Exception("Family already has 2 adults.");
-            }
-        }
-
         public async Task<bool> AddFamilyAsync(Family toAdd)
         {
-            IList<Family> families = await GetFamiliesAsync();
             var fam = JsonSerializer.Serialize(toAdd);
             StringContent familyAsJson = new StringContent(fam, Encoding.UTF8, "application/json");
-
-            int same = families.Where(f =>
-                (f.HouseNumber == toAdd.HouseNumber && f.StreetName == toAdd.StreetName)).Count();
-
-            if (same < 1)
-            {
                 var response = await client.PutAsync(url + "/families", familyAsJson);
-                return response.IsSuccessStatusCode;
-            }
+            if (response.IsSuccessStatusCode)
+                return true;
+            else if (response.StatusCode == HttpStatusCode.BadRequest)
+                throw new Exception("Family could not be created");
             else
-                throw new Exception("This family already exists");
+                throw new Exception("Family already exists");
         }
 
         public async Task<IList<Family>> GetFamiliesAsync()

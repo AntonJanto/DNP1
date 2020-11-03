@@ -53,7 +53,7 @@
                         <td>@family.HouseNumber</td>
                         <td>@family.TotalFamilyMembers()</td>
                         <AuthorizeView Policy="Delete">
-                            <td><span class="oi oi-circle-x" @onclick="() => RemoveFamily(family)" /></td>
+                            <td><span class="oi oi-circle-x" @onclick="async () => await RemoveFamily(family)" /></td>
                         </AuthorizeView>
                     </tr>
                 }
@@ -92,14 +92,16 @@
             NavigationManager.NavigateTo($"/adults/{street.Replace(" ", "_")}");
     }
 
-    private async void RemoveFamily(Family toRemove)
+    private async Task RemoveFamily(Family toRemove)
     {
         var removed = await FamilyService.RemoveFamilyAsync(toRemove);
+
         if (removed)
         {
             allFamilies.Remove(toRemove);
             ExecuteFilter();
         }
+
     }
 
     private void FilterByStreetName(ChangeEventArgs args)

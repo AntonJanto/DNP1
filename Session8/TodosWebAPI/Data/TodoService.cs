@@ -1,4 +1,4 @@
-﻿using AdvancedTodo.Models;
+﻿using TodosWebAPI.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace AdvancedTodo.Data
+namespace TodosWebAPI.Data
 {
     public class TodoService : ITodoService
     {
@@ -35,9 +35,9 @@ namespace AdvancedTodo.Data
             WriteTodosToFile();
         }
 
-        public async Task RemoveTodoAsync(Todo todo)
+        public async Task RemoveTodoAsync(int id)
         {
-            Todo toRemove = _todos.First(t => t.TodoID == todo.TodoID);
+            Todo toRemove = _todos.First(t => t.TodoID == id);
             _todos.Remove(toRemove);
             WriteTodosToFile();
         }
@@ -45,8 +45,15 @@ namespace AdvancedTodo.Data
         public async Task UpdateTodoAsync(Todo todo)
         {
             Todo toUpdate = _todos.First(t => t.TodoID == todo.TodoID);
-            toUpdate.IsCompleted = todo.IsCompleted;
-            WriteTodosToFile();
+            if (toUpdate != null)
+            {
+                toUpdate.IsCompleted = todo.IsCompleted;
+                WriteTodosToFile();
+            }
+            else
+            {
+                throw new KeyNotFoundException($"Todo with id: {todo.TodoID} not found");
+            }
         }
 
         private void WriteTodosToFile()
@@ -58,7 +65,7 @@ namespace AdvancedTodo.Data
         public async Task<IList<Todo>> GetTodosAsync()
         {
             return new List<Todo>(_todos);
-        } 
+        }
         private void Seed()
         {
             Todo[] ts =

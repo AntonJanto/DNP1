@@ -11,7 +11,6 @@ namespace DNP_FamilyOverview1.Data.Families
         Task<IList<Family>> GetFamiliesAsync();
         Task<bool> RemoveFamilyAsync(Family toRemove);
         Task<bool> AddFamilyAsync(Family toAdd);
-        Task<bool> AddAdultToFamilyAsync(Adult adultToAdd, Family familyToJoin);
         Task<bool> RemoveAdultAsync(Adult toRemove);
     }
 }

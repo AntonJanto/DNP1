@@ -61,7 +61,7 @@
                         <td>@adult.Sex</td>
                         <td>@adult.JobTitle</td>
                         <AuthorizeView Policy="Delete">
-                            <td><span class="oi oi-circle-x" @onclick="() => RemoveAdult(adult)" /></td>
+                            <td><span class="oi oi-circle-x" @onclick="async () => await RemoveAdult(adult)" /></td>
                         </AuthorizeView>
                     </tr>
                 }
@@ -111,14 +111,7 @@
         var removed = await FamilyService.RemoveAdultAsync(toRemove);
         if (removed)
         {
-            ActOnAdultsInAllFamilies((family, adult) =>
-            {
-                if (adult.Id == toRemove.Id)
-                {
-                    family.Adults.Remove(adult);
-                }
-                return false;
-            });
+            allFamilies.FirstOrDefault(fam => fam.Adults.Contains(toRemove)).Adults.Remove(toRemove);
         }
     }
 

@@ -1,8 +1,8 @@
-﻿using AdvancedTodo.Models;
+﻿using TodosWebAPI.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace AdvancedTodo.Data
+namespace TodosWebAPI.Data
 {
     public interface ITodoService
     {

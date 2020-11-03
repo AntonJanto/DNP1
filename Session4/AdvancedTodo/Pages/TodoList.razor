@@ -44,18 +44,18 @@ else
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in showTodos)
+            @foreach (var todo in showTodos)
             {
                 <tr>
-                    <td>@item.UserID</td>
-                    <td>@item.TodoID</td>
-                    <td>@item.Title</td>
+                    <td>@todo.UserID</td>
+                    <td>@todo.TodoID</td>
+                    <td>@todo.Title</td>
                     <td>
-                        <input type="checkbox" checked=@item.IsCompleted
-                               @onchange="@((arg) => CompletedChange(arg, item))">
+                        <input type="checkbox" checked=@todo.IsCompleted
+                               @onchange="@(async (arg) => await CompletedChange(arg, todo))">
                     </td>
                     <td>
-                        <button @onclick="@(() => RemoveTodo(item))">
+                        <button @onclick="@(async () => await RemoveTodo(todo.TodoID))">
                             <span class="oi oi-x" style="color:red" />
                         </button>
                     </td>
@@ -112,17 +112,19 @@ else
         (filterByIsCompleted != null && t.IsCompleted == filterByIsCompleted || filterByIsCompleted == null)).ToList();
     }
 
-    private async void RemoveTodo(Todo todo)
+    private async Task RemoveTodo(int id)
     {
-        Todo todoToRemove = allTodos.First(t => t.TodoID == todo.TodoID);
-        await TodoService.RemoveTodoAsync(todo);
-        allTodos.Remove(todoToRemove);
+        await TodoService.RemoveTodoAsync(id);
+        allTodos = await TodoService.GetTodosAsync();
+        ExecuteFilter();
     }
 
-    private async void CompletedChange(ChangeEventArgs evt, Todo todo)
+    private async Task CompletedChange(ChangeEventArgs evt, Todo todo)
     {
         todo.IsCompleted = (bool)evt.Value;
         await TodoService.UpdateTodoAsync(todo);
+        await TodoService.GetTodosAsync();
+        ExecuteFilter();
     }
 
 

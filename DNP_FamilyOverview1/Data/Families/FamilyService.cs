@@ -47,38 +47,6 @@ namespace DNP_FamilyOverview1.Data.Families
             else
                 throw new Exception("This family already exists");
         }
-        public async Task<bool> AddAdultToFamilyAsync(Adult adultToAdd, Family familyToJoin)
-        {
-            IList<Family> families = familyFileHandler.Families;
-            IList<Adult> adults = CollectAdults(families);
-            Family family;
-
-            try
-            {
-                family = families.First(f => f.StreetName == familyToJoin.StreetName && f.HouseNumber == familyToJoin.HouseNumber);
-            }
-            catch (ArgumentNullException)
-            {
-                return false;
-            }
-
-            if (family.Adults.Count < 2)
-            {
-                int maxId = adults.Any() ? adults.Max(a => a.Id) : 0;
-
-                if (adults.Any(a => a.Equals(adultToAdd)))
-                    throw new Exception($"{adultToAdd.FirstName} {adultToAdd.LastName} cannot lead a double life.");
-
-                adultToAdd.Id = ++maxId;
-                family.Adults.Add(adultToAdd);
-                familyFileHandler.SaveChanges();
-                return true;
-            }
-            else
-            {
-                throw new Exception("Family already has 2 adults.");
-            }
-        }
 
         public async Task<bool> RemoveAdultAsync(Adult toRemove)
         {

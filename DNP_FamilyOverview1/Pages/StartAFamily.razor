@@ -100,10 +100,10 @@
                 var ad1valid = adult1Context.Validate();
                 if (ad1valid)
                 {
+                    newFamily.Adults.Add(adult1);
                     if (await FamilyService.AddFamilyAsync(newFamily))
                     {
                         message = "Family  created";
-                        await FamilyService.AddAdultToFamilyAsync(adult1, newFamily);
                     }
                 }
             }
@@ -113,11 +113,11 @@
                 var ad2valid = adult2Context.Validate();
                 if (ad1valid && ad2valid)
                 {
+                    newFamily.Adults.Add(adult1);
+                    newFamily.Adults.Add(adult2);
                     if (await FamilyService.AddFamilyAsync(newFamily))
                     {
                         message = "Family  created";
-                        await FamilyService.AddAdultToFamilyAsync(adult1, newFamily);
-                        await FamilyService.AddAdultToFamilyAsync(adult2, newFamily);
                     }
                 }
             }
