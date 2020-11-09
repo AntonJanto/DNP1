@@ -1,4 +1,4 @@
-﻿using DNP_FamilyOverview1.Models.Authentication;
+﻿using FamilyAPI.Models.Authentication;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -6,13 +6,13 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace DNP_FamilyOverview1.Data.Authentication.Impl
+namespace FamilyAPI.Data.Authentication
 {
     public class UserService : IUserService
     {
         public IList<User> Users { get; private set; }
 
-        private readonly string usersFile = "Data/Authentication/users.json";
+        private readonly string usersFile = "Data/FileData/users.json";
 
         public UserService()
         {
@@ -23,7 +23,7 @@ namespace DNP_FamilyOverview1.Data.Authentication.Impl
             else
                 Users = new List<User>();
         }
-        public User ValidateUser(string username, string password)
+        public async Task<User> ValidateUserAsync(string username, string password)
         {
             try
             {
@@ -36,7 +36,7 @@ namespace DNP_FamilyOverview1.Data.Authentication.Impl
             }
         }
 
-        public void RegisterUser(string username, string password)
+        public async Task RegisterUserAsync(string username, string password)
         {
             int same = Users.Where(u => u.Username == username).Count();
             if (same == 0)

@@ -32,7 +32,7 @@ namespace DNP_FamilyOverview1
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddSingleton<IFamilyService, CloudFamilyService>();
-            services.AddSingleton<IUserService, UserService>();
+            services.AddSingleton<IUserService, CloudUserService>();
             services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
             services.AddAuthorization(options =>
             {

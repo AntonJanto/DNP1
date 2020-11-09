@@ -12,20 +12,20 @@ namespace DNP_FamilyOverview1.Data.Families
 {
     public class CloudFamilyService : IFamilyService
     {
-        private readonly string url = "http://dnp.metamate.me";
+        private readonly string url = "http://localhost:5002/api";
         private readonly HttpClient client = new HttpClient();
 
         public async Task<bool> AddFamilyAsync(Family toAdd)
         {
             var fam = JsonSerializer.Serialize(toAdd);
             StringContent familyAsJson = new StringContent(fam, Encoding.UTF8, "application/json");
-                var response = await client.PutAsync(url + "/families", familyAsJson);
+                var response = await client.PostAsync(url + "/families", familyAsJson);
             if (response.IsSuccessStatusCode)
                 return true;
             else if (response.StatusCode == HttpStatusCode.BadRequest)
-                throw new Exception("Family could not be created");
-            else
                 throw new Exception("Family already exists");
+            else
+                throw new Exception("Family could not be created");
         }
 
         public async Task<IList<Family>> GetFamiliesAsync()

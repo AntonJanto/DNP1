@@ -41,7 +41,7 @@ namespace DNP_FamilyOverview1.Data.Authentication.Impl
             return await Task.FromResult(new AuthenticationState(cachedClaimsPrincipal));
         }
 
-        public void ValidateRegister(string username, string password, string confirmPassword)
+        public async Task ValidateRegisterAsync(string username, string password, string confirmPassword)
         {
             if (string.IsNullOrEmpty(username)) throw new Exception("Enter username");
             if (string.IsNullOrEmpty(password)) throw new Exception("Enter password");
@@ -52,7 +52,8 @@ namespace DNP_FamilyOverview1.Data.Authentication.Impl
             {
                 try
                 {
-                    userService.RegisterUser(username, password);
+                    await userService.RegisterUserAsync(username, password);
+                    return;
                 }
                 catch (Exception e)
                 {
@@ -61,7 +62,7 @@ namespace DNP_FamilyOverview1.Data.Authentication.Impl
             }
         }
 
-        public void ValidateLogin(string username, string password)
+        public async Task ValidateLoginAsync(string username, string password)
         {
             if (string.IsNullOrEmpty(username)) throw new Exception("Enter username");
             if (string.IsNullOrEmpty(password)) throw new Exception("Enter password");
@@ -69,10 +70,10 @@ namespace DNP_FamilyOverview1.Data.Authentication.Impl
             ClaimsIdentity identity = new ClaimsIdentity();
             try
             {
-                User user = userService.ValidateUser(username, password);
+                User user = await userService.ValidateUserAsync(username, password);
                 identity = SetupClaimsForUser(user);
                 string serialisedData = JsonSerializer.Serialize(user);
-                jsRuntime.InvokeVoidAsync("sessionStorage.setItem", "currentUser", serialisedData);
+                await jsRuntime.InvokeVoidAsync("sessionStorage.setItem", "currentUser", serialisedData);
                 cachedUser = user;
             }
             catch (Exception e)
@@ -83,11 +84,11 @@ namespace DNP_FamilyOverview1.Data.Authentication.Impl
             NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(new ClaimsPrincipal(identity))));
         }
 
-        public void Logout()
+        public async Task LogoutAsync()
         {
             cachedUser = null;
             var user = new ClaimsPrincipal(new ClaimsIdentity());
-            jsRuntime.InvokeVoidAsync("sessionStorage.setItem", "currentUser", "");
+            await jsRuntime.InvokeVoidAsync("sessionStorage.setItem", "currentUser", "");
             NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(user)));
 
         }

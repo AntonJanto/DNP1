@@ -27,7 +27,7 @@
                 <input type="password" class="form-control" id="passwordagain" @bind-value="@passwordAgain" />
             </div>
             <span style="color:red">@errorMessage</span>
-            <button class="btn btn-primary" @onclick="PerformRegister">Register</button>
+            <button class="btn btn-primary" @onclick="PerformRegisterAsync">Register</button>
         </div>
     </NotAuthorized>
 </AuthorizeView>
@@ -54,12 +54,12 @@
         }
     }
 
-    private void PerformRegister()
+    private async Task PerformRegisterAsync()
     {
         errorMessage = "";
         try
         {
-            ((CustomAuthenticationStateProvider)AuthenticationStateProvider).ValidateRegister(username, password, passwordAgain);
+            await ((CustomAuthenticationStateProvider)AuthenticationStateProvider).ValidateRegisterAsync(username, password, passwordAgain);
             username = "";
             password = "";
             passwordAgain = "";

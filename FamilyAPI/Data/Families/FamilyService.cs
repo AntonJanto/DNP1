@@ -1,11 +1,11 @@
-﻿using DNP_FamilyOverview1.Data.FileData;
-using DNP_FamilyOverview1.Models.Families;
+﻿using FamilyAPI.Data.FileData;
+using FamilyAPI.Models.Families;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DNP_FamilyOverview1.Data.Families
+namespace FamilyAPI.Data.Families
 {
     public class FamilyService : IFamilyService
     {
@@ -24,14 +24,15 @@ namespace DNP_FamilyOverview1.Data.Families
 
         public async Task<bool> RemoveFamilyAsync(Family toRemove)
         {
-            bool removed = familyFileHandler.Families.Remove(toRemove);
+            Family fam = familyFileHandler.Families.FirstOrDefault(f => f.HouseNumber == toRemove.HouseNumber && f.StreetName == toRemove.StreetName);
+            bool removed = familyFileHandler.Families.Remove(fam);
             if (removed)
             {
                 familyFileHandler.SaveChanges();
             }
             return removed;
         }
-        public async Task<bool> AddFamilyAsync(Family toAdd)
+        public async Task<Family> AddFamilyAsync(Family toAdd)
         {
             IList<Family> families = familyFileHandler.Families;
 
@@ -40,24 +41,28 @@ namespace DNP_FamilyOverview1.Data.Families
 
             if (same < 1)
             {
+                AssignIdsToAdults(toAdd.Adults);
                 families.Add(toAdd);
                 familyFileHandler.SaveChanges();
-                return true;
+                return toAdd;
             }
             else
                 throw new Exception("This family already exists");
         }
 
-        public async Task<bool> RemoveAdultAsync(Adult toRemove)
+        public async Task<bool> RemoveAdultAsync(int toRemoveId)
         {
             IList<Family> families = familyFileHandler.Families;
             foreach (var family in families)
             {
-                if (family.Adults.Contains(toRemove))
+                foreach (var adult in family.Adults)
                 {
-                    var removed = family.Adults.Remove(toRemove);
-                    familyFileHandler.SaveChanges();
-                    return removed;
+                    if (adult.Id == toRemoveId)
+                    {
+                        var removed = family.Adults.Remove(adult);
+                        familyFileHandler.SaveChanges();
+                        return removed;
+                    }
                 }
             }
             return false;
@@ -74,6 +79,17 @@ namespace DNP_FamilyOverview1.Data.Families
                 }
             }
             return adults;
+        }
+
+        private void AssignIdsToAdults(IList<Adult> adults)
+        {
+            IList<Family> families = familyFileHandler.Families;
+            int maxId = CollectAdults(families).Max(a => a.Id);
+
+            foreach (var adult in adults)
+            {
+                adult.Id = ++maxId;
+            }
         }
     }
 }

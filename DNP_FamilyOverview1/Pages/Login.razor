@@ -21,7 +21,7 @@
                 <input type="password" class="form-control" id="password" @bind-value="password" />
             </div>
             <span style="color:red">@errorMessage</span>
-            <button class="btn btn-primary" @onclick="PerformLogin">Login</button>
+            <button class="btn btn-primary" @onclick="PerformLoginAsync">Login</button>
         </div>
     </NotAuthorized>
 </AuthorizeView>
@@ -31,12 +31,12 @@
     private string password;
     private string errorMessage;
 
-    private async Task PerformLogin()
+    private async Task PerformLoginAsync()
     {
         errorMessage = "";
         try
         {
-            ((CustomAuthenticationStateProvider)AuthenticationStateProvider).ValidateLogin(username, password);
+            await ((CustomAuthenticationStateProvider)AuthenticationStateProvider).ValidateLoginAsync(username, password);
             username = "";
             password = "";
             NavigationManager.NavigateTo("/");
