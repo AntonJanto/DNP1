@@ -8,7 +8,7 @@
 
 <h2>Start a Family</h2>
 <div class="start-family-page">
-    <EditForm Model="@newFamily" OnValidSubmit="@AddNewFamily">
+    <EditForm Model="@newFamily" OnValidSubmit="@AddNewFamilyAsync">
         <div class="d-flex flex-column align-items-center">
             <DataAnnotationsValidator />
             <ValidationSummary />
@@ -82,7 +82,7 @@
 
     private void DropAdult() => adultsInFamily--;
 
-    private async void AddNewFamily()
+    private async Task AddNewFamilyAsync()
     {
         message = "";
         error = "";

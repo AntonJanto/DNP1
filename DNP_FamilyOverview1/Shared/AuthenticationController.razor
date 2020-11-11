@@ -10,7 +10,7 @@
     </NotAuthorized>
     <Authorized>
         <div style="color:red">@errorMessage</div>
-        <a href="" @onclick="PerformLogout">Log out</a>
+        <a href="" @onclick="PerformLogoutAsync">Log out</a>
     </Authorized>
 </AuthorizeView>
 
@@ -28,7 +28,7 @@
         NavigationManager.NavigateTo("/login");
     }
 
-    private async Task PerformLogout()
+    private async Task PerformLogoutAsync()
     {
         try
         {

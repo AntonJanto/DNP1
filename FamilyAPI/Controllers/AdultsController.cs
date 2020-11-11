@@ -18,6 +18,10 @@ namespace FamilyAPI.Controllers
             this.familyService = familyService;
         }
 
+        /// <summary>
+        /// Remove an adult
+        /// </summary>
+        /// <param name="adultId">adult id</param>
         [HttpDelete]
         [Route("{adultId:int}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
