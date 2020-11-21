@@ -27,6 +27,11 @@ namespace TodosWebAPI.Data
             }
         }
 
+        public Task<IList<Todo>> GetTodosAsync(int userId)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task AddTodoAsync(Todo todo)
         {
             int max = _todos.Any() ? _todos.Max(todo => todo.TodoID) : 0;

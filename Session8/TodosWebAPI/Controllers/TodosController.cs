@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace TodosWebAPI.Controllers
@@ -17,15 +16,24 @@ namespace TodosWebAPI.Controllers
 
         public TodosController(ITodoService todoService)
         {
-            this.TodoService = todoService;
+            TodoService = todoService;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IList<Todo>>> GetTodos()
+        public async Task<ActionResult<IList<Todo>>> GetTodos(int? userId)
         {
             try
             {
-                IList<Todo> todos = await TodoService.GetTodosAsync();
+                IList<Todo> todos;
+                if (userId is null)
+                {
+                    todos = await TodoService.GetTodosAsync();
+                }
+                else
+                {
+                    todos = await TodoService.GetTodosAsync((int) userId);
+                }
+
                 return Ok(todos);
             }
             catch (Exception e)
@@ -75,5 +83,18 @@ namespace TodosWebAPI.Controllers
             }
         }
 
+        [HttpPost]
+        public async Task<ActionResult> AddTodo([FromBody] Todo todo)
+        {
+            try
+            {
+                await TodoService.AddTodoAsync(todo);
+                return StatusCode(201);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e.Message);
+            }
+        }
     }
 }
