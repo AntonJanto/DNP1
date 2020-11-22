@@ -83,7 +83,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Session9", "Session9", "{00
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViaExample", "Session9\ViaExample\ViaExample.csproj", "{F65496F9-13FD-4E86-BB51-E278A6C2B489}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraryEF", "Session9\LibraryEF\LibraryEF.csproj", "{B7F4E299-91FE-46FC-B1B7-501BFBA413CC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibraryEF", "Session9\LibraryEF\LibraryEF.csproj", "{B7F4E299-91FE-46FC-B1B7-501BFBA413CC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
