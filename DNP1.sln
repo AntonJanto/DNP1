@@ -87,7 +87,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibraryEF", "Session9\Libra
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Session10", "Session10", "{79E9062B-097E-4173-B73B-2A2FC7F27B6C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentCourse-Many-To-Many", "Session10\StudentCourse-Many-To-Many\StudentCourse-Many-To-Many.csproj", "{1832C87D-1015-4729-88C1-7009CA242CBB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StudentCourse-Many-To-Many", "Session10\StudentCourse-Many-To-Many\StudentCourse-Many-To-Many.csproj", "{1832C87D-1015-4729-88C1-7009CA242CBB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FamilyEx", "Session10\FamilyEx\FamilyEx.csproj", "{5352F602-7735-46D1-AC57-541FDE79B3EE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -223,6 +225,10 @@ Global
 		{1832C87D-1015-4729-88C1-7009CA242CBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1832C87D-1015-4729-88C1-7009CA242CBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1832C87D-1015-4729-88C1-7009CA242CBB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5352F602-7735-46D1-AC57-541FDE79B3EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5352F602-7735-46D1-AC57-541FDE79B3EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5352F602-7735-46D1-AC57-541FDE79B3EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5352F602-7735-46D1-AC57-541FDE79B3EE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -261,6 +267,7 @@ Global
 		{F65496F9-13FD-4E86-BB51-E278A6C2B489} = {00151ED0-7236-4DE4-87FA-7095634D8958}
 		{B7F4E299-91FE-46FC-B1B7-501BFBA413CC} = {00151ED0-7236-4DE4-87FA-7095634D8958}
 		{1832C87D-1015-4729-88C1-7009CA242CBB} = {79E9062B-097E-4173-B73B-2A2FC7F27B6C}
+		{5352F602-7735-46D1-AC57-541FDE79B3EE} = {79E9062B-097E-4173-B73B-2A2FC7F27B6C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C084BF19-D455-4123-ACB1-748B62565BB3}
