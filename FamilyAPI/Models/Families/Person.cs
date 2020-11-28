@@ -9,6 +9,7 @@ namespace FamilyAPI.Models.Families
 {
     public class Person
     {
+        [Key]
         public int Id { get; set; }
 
         [NotNull]

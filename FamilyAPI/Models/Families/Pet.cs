@@ -4,6 +4,7 @@ namespace FamilyAPI.Models.Families
 {
     public class Pet
     {
+        [Key]
         public int Id { get; set; }
         [Required]
         public string Species { get; set; }
