@@ -36,8 +36,7 @@ namespace FamilyAPI.Data.Families
         {
             IList<Family> families = familyFileHandler.Families;
 
-            int same = families.Where(f =>
-                (f.HouseNumber == toAdd.HouseNumber && f.StreetName == toAdd.StreetName)).Count();
+            int same = families.Count(f => (f.HouseNumber == toAdd.HouseNumber && f.StreetName == toAdd.StreetName));
 
             if (same < 1)
             {
