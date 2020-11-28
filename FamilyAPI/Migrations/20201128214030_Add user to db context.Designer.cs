@@ -3,14 +3,16 @@ using System;
 using FamilyAPI.Data.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FamilyAPI.Migrations
 {
     [DbContext(typeof(FamilyApiContext))]
-    partial class FamilyApiContextModelSnapshot : ModelSnapshot
+    [Migration("20201128214030_Add user to db context")]
+    partial class Addusertodbcontext
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -1,3 +1,4 @@
+using FamilyAPI.Models.Authentication;
 using FamilyAPI.Models.Families;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,6 +11,8 @@ namespace FamilyAPI.Data.DataAccess
         public DbSet<Child> Children { get; set; }
         public DbSet<Interest> Interests { get; set; }
         public DbSet<Pet> Pets { get; set; }
+        
+        public DbSet<User> Users { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

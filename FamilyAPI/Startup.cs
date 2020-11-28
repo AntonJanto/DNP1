@@ -27,7 +27,7 @@ namespace FamilyAPI
             
             services.AddScoped<IFamilyService, SqliteFamilyService>();
             
-            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IUserService, SqliteUserService>();
             
             services.AddSwaggerDocument(config =>
             {

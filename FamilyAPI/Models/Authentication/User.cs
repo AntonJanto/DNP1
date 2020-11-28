@@ -8,7 +8,7 @@ namespace FamilyAPI.Models.Authentication
 {
     public class User
     {
-        [Required]
+        [Key, Required]
         [MinLength(2), MaxLength(64)]
         public string Username { get; set; }
 
