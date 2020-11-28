@@ -1,4 +1,5 @@
 using FamilyAPI.Data.Authentication;
+using FamilyAPI.Data.DataAccess;
 using FamilyAPI.Data.Families;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -21,8 +22,13 @@ namespace FamilyAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddSingleton<IFamilyService, FamilyService>();
-            services.AddSingleton<IUserService, UserService>();
+            
+            services.AddDbContext<FamilyApiContext>();
+            
+            services.AddScoped<IFamilyService, SqliteFamilyService>();
+            
+            services.AddScoped<IUserService, UserService>();
+            
             services.AddSwaggerDocument(config =>
             {
                 config.PostProcess = document =>
