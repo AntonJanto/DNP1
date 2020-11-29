@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mime;
 using System.Threading.Tasks;
-using FamilyAPI.Data.Families;
+using FamilyAPI.Middleware.Families;
 using FamilyAPI.Models.Families;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Formatters;
 
 namespace FamilyAPI.Controllers
 {

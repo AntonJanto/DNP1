@@ -8,8 +8,8 @@ public class FileContext {
     public IList<Family> Families { get; private set; }
     public IList<Adult> Adults { get; private set; }
 
-    private readonly string familiesFile = "Data/FileData/families.json";
-    private readonly string adultsFile = "Data/FileData/fadults.json";
+    private readonly string familiesFile = "FileData/families.json";
+    private readonly string adultsFile = "FileData/fadults.json";
 
     public FileContext() {
         Families = File.Exists(familiesFile) ? ReadData<Family>(familiesFile) : new List<Family>();

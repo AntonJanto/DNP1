@@ -2,7 +2,7 @@ using FamilyAPI.Models.Authentication;
 using FamilyAPI.Models.Families;
 using Microsoft.EntityFrameworkCore;
 
-namespace FamilyAPI.Data.DataAccess
+namespace FamilyAPI.DataAccess
 {
     public class FamilyApiContext : DbContext
     {
@@ -16,7 +16,7 @@ namespace FamilyAPI.Data.DataAccess
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite(@"DataSource = C:\Users\anton\DNP1\FamilyAPI\Data\DataAccess\FamilyDB.db");
+            optionsBuilder.UseSqlite(@"DataSource = C:\Users\anton\DNP1\FamilyAPI\DataAccess\FamilyDB.db");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

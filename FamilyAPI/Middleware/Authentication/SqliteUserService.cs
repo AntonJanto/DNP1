@@ -1,10 +1,10 @@
 using System;
 using System.Threading.Tasks;
-using FamilyAPI.Data.DataAccess;
+using FamilyAPI.DataAccess;
 using FamilyAPI.Models.Authentication;
 using Microsoft.EntityFrameworkCore;
 
-namespace FamilyAPI.Data.Authentication
+namespace FamilyAPI.Middleware.Authentication
 {
     public class SqliteUserService : IUserService
     {

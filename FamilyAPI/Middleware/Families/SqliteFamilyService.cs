@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using FamilyAPI.Data.DataAccess;
+using FamilyAPI.DataAccess;
 using FamilyAPI.Models.Families;
 using Microsoft.EntityFrameworkCore;
 
-namespace FamilyAPI.Data.Families
+namespace FamilyAPI.Middleware.Families
 {
     public class SqliteFamilyService : IFamilyService
     {

@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using FamilyAPI.Data.Families;
+﻿using System.Threading.Tasks;
+using FamilyAPI.Middleware.Families;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 

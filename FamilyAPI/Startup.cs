@@ -1,6 +1,6 @@
-using FamilyAPI.Data.Authentication;
-using FamilyAPI.Data.DataAccess;
-using FamilyAPI.Data.Families;
+using FamilyAPI.Middleware.Authentication;
+using FamilyAPI.DataAccess;
+using FamilyAPI.Middleware.Families;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;

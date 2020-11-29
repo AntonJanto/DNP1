@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace FamilyAPI.Data.Families
+namespace FamilyAPI.Middleware.Families
 {
     public class FamilyService : IFamilyService
     {
