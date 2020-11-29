@@ -4,6 +4,8 @@ using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
+using System.Security.Cryptography;
+using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -47,19 +49,12 @@ namespace DNP_FamilyOverview1.Data.Authentication.Impl
             if (string.IsNullOrEmpty(password)) throw new Exception("Enter password");
             if (string.IsNullOrEmpty(confirmPassword)) throw new Exception("Confirm password");
 
-            if (password != confirmPassword) throw new Exception("Passwords do not match");
-            else 
-            {
-                try
-                {
-                    await userService.RegisterUserAsync(username, password);
-                    return;
-                }
-                catch (Exception e)
-                {
-                    throw e;
-                }
-            }
+            if (password != confirmPassword) 
+                throw new Exception("Passwords do not match");
+
+            var hashedPw = HashString(password);
+            
+            await userService.RegisterUserAsync(username, hashedPw);
         }
 
         public async Task ValidateLoginAsync(string username, string password)
@@ -70,7 +65,8 @@ namespace DNP_FamilyOverview1.Data.Authentication.Impl
             ClaimsIdentity identity = new ClaimsIdentity();
             try
             {
-                User user = await userService.ValidateUserAsync(username, password);
+                var hashedPw = HashString(password);
+                var user = await userService.ValidateUserAsync(username, hashedPw);
                 identity = SetupClaimsForUser(user);
                 string serialisedData = JsonSerializer.Serialize(user);
                 await jsRuntime.InvokeVoidAsync("sessionStorage.setItem", "currentUser", serialisedData);
@@ -95,12 +91,22 @@ namespace DNP_FamilyOverview1.Data.Authentication.Impl
 
         private ClaimsIdentity SetupClaimsForUser(User cachedUser)
         {
-            List<Claim> claims = new List<Claim>();
-            claims.Add(new Claim(ClaimTypes.Name, cachedUser.Username));
-            claims.Add(new Claim("Permissions", cachedUser.Permissions.ToString()));
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, cachedUser.Username),
+                new Claim("Permissions", cachedUser.Permissions.ToString())
+            };
 
             var identity = new ClaimsIdentity(claims, "apiauth_type");
             return identity;
+        }
+
+        private string HashString(string input)
+        {
+            using HashAlgorithm algorithm = SHA256.Create();
+            var hashBytes = algorithm.ComputeHash(Encoding.UTF8.GetBytes(input));
+            var hashedInputAsString = Encoding.ASCII.GetString(hashBytes);
+            return hashedInputAsString;
         }
     }
 }
