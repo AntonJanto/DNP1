@@ -13,7 +13,7 @@ namespace Client03x03
             string response = "";
             Console.WriteLine("Starting client..");
 
-            TcpClient client = new TcpClient("10.0.0.134", 5000);
+            TcpClient client = new TcpClient("10.0.0.218", 5000);
 
             NetworkStream stream = client.GetStream();
 

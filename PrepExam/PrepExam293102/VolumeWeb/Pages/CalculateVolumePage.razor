@@ -1,0 +1,65 @@
+﻿@page "/CalculateVolumePage"
+@using VolumeWebService
+@using System.Text.Json
+<h3>CalculateVolumePage</h3>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <EditForm Model="@newVolume" OnValidSubmit="SubmitForm">
+                <DataAnnotationsValidator/>
+                <ValidationSummary/>
+
+                <div class="form-group">
+                    <InputRadioGroup Name="objectType" @bind-Value="newVolume.Type">
+                        <InputRadio Name="objectType" Value="types[0]" />Cylinder
+                        <InputRadio Name="objectType" Value="types[1]" />Cone
+                    </InputRadioGroup>
+                </div>
+
+                <div class="form-group">
+                    <label>Height:</label>
+                    <InputNumber Class="form-control" @bind-Value="newVolume.Height"/>
+                </div>
+
+                <div class="form-group">
+                    <label>Radius:</label>
+                    <InputNumber Class="form-control" @bind-Value="newVolume.Radius"/>
+                </div>
+                <button type="submit" class="btn-primary btn-lg rounded">Calculate</button>
+            </EditForm>
+        </div>
+    </div>
+    @if (latestVolumeResult != null)
+    {
+        <h3>
+            Latest Volume calculated:
+        </h3>
+        <p>Id: @latestVolumeResult.Id</p>
+        <p>Type: @latestVolumeResult.Type</p>
+        <p>Height: @latestVolumeResult.Height</p>
+        <p>Radius: @latestVolumeResult.Radius</p>
+        <p>Volume: @latestVolumeResult.Volume</p>
+    }
+    else
+    {
+        <h3>No record of a previous calculation</h3>
+    }
+
+</div>
+
+@code {
+    private VolumeResult newVolume = new();
+    private VolumeResult latestVolumeResult;
+
+    private string[] types = {"cylinder", "cone"};
+
+    private async Task SubmitForm(EditContext ec)
+    {
+        var client = new HttpClient();
+        var response = await client.PostAsync($"http://localhost:5000/calculate/{newVolume.Type}?height={newVolume.Height}&radius={newVolume.Radius}", null);
+        var responseContent = await response.Content.ReadAsStringAsync();
+        VolumeResult result = JsonSerializer.Deserialize<VolumeResult>(responseContent);
+        newVolume = new VolumeResult();
+        latestVolumeResult = result;
+    }
+}

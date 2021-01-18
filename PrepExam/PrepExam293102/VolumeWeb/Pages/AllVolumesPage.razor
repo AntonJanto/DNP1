@@ -1,0 +1,42 @@
+﻿@page "/AllVolumesPage"
+@using VolumeWebService
+@using System.Text.Json
+<h3>AllVolumesPage</h3>
+
+@if (_volumeResults != null)
+{
+    <table class="table table-striped">
+        <thead>
+        <th>Id</th>
+        <th>Type</th>
+        <th>Height</th>
+        <th>Radius</th>
+        <th>Volume</th>
+        </thead>
+        <tbody>
+        @foreach (var volume in _volumeResults)
+        {
+            <tr>
+
+                <td>@volume.Id</td>
+                <td>@volume.Type</td>
+                <td>@volume.Height</td>
+                <td>@volume.Radius</td>
+                <td>@volume.Volume</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+@code {
+    private IList<VolumeResult> _volumeResults;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var client = new HttpClient();
+        var volumesAsString = await client.GetStringAsync("http://localhost:5000/volume-result");
+        _volumeResults = JsonSerializer.Deserialize<List<VolumeResult>>(volumesAsString);
+    }
+
+}

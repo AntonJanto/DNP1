@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolumeWebService", "VolumeWebService\VolumeWebService.csproj", "{4A276CA6-14F6-461C-A9C7-4689FC3C0366}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolumeWeb", "VolumeWeb\VolumeWeb.csproj", "{F1E56AF9-8910-4EBF-ACCD-DF12C67BB8A2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4A276CA6-14F6-461C-A9C7-4689FC3C0366}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A276CA6-14F6-461C-A9C7-4689FC3C0366}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A276CA6-14F6-461C-A9C7-4689FC3C0366}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A276CA6-14F6-461C-A9C7-4689FC3C0366}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1E56AF9-8910-4EBF-ACCD-DF12C67BB8A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1E56AF9-8910-4EBF-ACCD-DF12C67BB8A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1E56AF9-8910-4EBF-ACCD-DF12C67BB8A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1E56AF9-8910-4EBF-ACCD-DF12C67BB8A2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
